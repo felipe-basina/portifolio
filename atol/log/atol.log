@@ -1,1 +1,0 @@
-2021-04-06 20:22:44,811 [main] ERROR atol.core - Database configuration not found, :database-url environment variable must be set before running 

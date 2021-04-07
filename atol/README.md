@@ -14,7 +14,13 @@ You will need [Leiningen][1] 2.0 or above installed.
 
 To start a web server for the application + with dev dependencies, run:
 
-    . ./run.sh 
+    . ./run.sh
+
+## Swagger
+
+Swagger UI is available on following path
+
+    /swagger-ui/index.html
 
 ## License
 

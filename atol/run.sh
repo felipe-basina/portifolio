@@ -14,4 +14,8 @@ export DATABASE_URL=postgresql://postgres@localhost:5432/atol_dev
 echo 'Waiting containers to be up running...'
 sleep 10s
 
+# Running scripts into database
+echo 'Running migrations'
+cat ./migrations/*.sql | docker exec -i atol_thedb_1 psql -U postgres -d atol_dev
+
 lein run

@@ -14,12 +14,10 @@
   (layout/render request "about.html"))
 
 (defn test-page [request]
-  (let [samples (db/get-samples)
-        new-sample (db/create-sample! {:description "Sample from app"
-                                       :created_on  (java.util.Date.)})]
-    (println samples)
-    (println new-sample))
-  (layout/render request "test.html"))
+  (let [_ (db/create-sample! {:description "Sample from app"
+                              :created_on  (java.util.Date.)})
+        samples (db/get-samples)]
+    (layout/render request "test.html" {:samples samples})))
 
 (defn say-hi [request]
   (let [someone (get (:form-params request) "name")

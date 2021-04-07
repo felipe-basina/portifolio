@@ -1,4 +1,4 @@
--- :name get-samples :? :n
+-- :name get-samples :? :*
 -- :doc retrieves all samples
 SELECT * FROM samples
 

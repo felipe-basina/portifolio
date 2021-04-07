@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+  <form action="/sayHi" method="POST">
+    {% csrf-field %}
+    <span>Type your name:</span>
+    <input id="name" name="name" type="text" />
+    <input type="submit" value="send" />
+  </form>
+  {% if name %}
+  <div>
+    <span><h3>Hello {{name}}</h3></span>
+  </div>
+  {% endif %}
+{% endblock %}

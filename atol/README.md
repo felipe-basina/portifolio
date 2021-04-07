@@ -16,6 +16,12 @@ To start a web server for the application + with dev dependencies, run:
 
     . ./run.sh
 
+## REPL
+
+Connect to REPL
+
+    lein repl :connect 7000
+
 ## Swagger
 
 Swagger UI is available on following path

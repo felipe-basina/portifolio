@@ -11,4 +11,10 @@
     <span><h3>Hello {{name}}</h3></span>
   </div>
   {% endif %}
+  <h1><strong>Samples</strong></h1>
+  <ul>
+  {% for sample in samples %}
+    <li>{{sample.sample_id}} | {{sample.description}} | {{sample.created_on|date:"yyyy-MM-dd HH:mm:ss"}}</li>
+  {% endfor %}
+  </ul>
 {% endblock %}

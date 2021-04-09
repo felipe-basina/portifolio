@@ -17,6 +17,7 @@
   (layout/render request "test.html" {:samples (ss/get-samples)}))
 
 (defn say-hi [request]
+  (println "request full\n" request)
   (let [someone (get (:form-params request) "name")
         someone (if (not-empty someone) someone "there!")]
     (layout/render request "test.html" {:name someone :samples (ss/get-samples)})))
@@ -24,8 +25,10 @@
 (defn home-routes []
   [""
    {:middleware [middleware/wrap-csrf
-                 middleware/wrap-formats]}
-   ["/" {:get home-page}]
+                 middleware/wrap-formats
+                 middleware/wrap-restricted]
+    }
+   ;["/" {:get home-page}]
    ["/about" {:get about-page}]
    ["/test" {:get test-page}]
    ["/sayHi" {:post say-hi}]])

@@ -22,7 +22,8 @@
         template
         (assoc params
           :page template
-          :csrf-token *anti-forgery-token*)))
+          :csrf-token *anti-forgery-token*
+          :identity (:identity (:session request)))))
     "text/html; charset=utf-8"))
 
 (defn error-page

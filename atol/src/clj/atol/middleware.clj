@@ -11,9 +11,14 @@
     [ring.adapter.undertow.middleware.session :refer [wrap-session]]
     [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
     [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
-            [buddy.auth.accessrules :refer [restrict]]
-            [buddy.auth :refer [authenticated?]]
-    [buddy.auth.backends.session :refer [session-backend]])
+    [buddy.auth.accessrules :refer [restrict wrap-access-rules]]
+    [buddy.auth :refer [authenticated?]]
+    [buddy.auth.backends.session :refer [session-backend]]
+    [ring.util.response :refer [response redirect content-type]]
+    ;[ring.middleware.session :refer [wrap-session]]
+    ;[ring.middleware.params :refer [wrap-params]]
+    [clojure.java.io :as io]
+    [atol.layout :as layout])
   )
 
 (defn wrap-internal-error [handler]
@@ -22,8 +27,8 @@
       (handler req)
       (catch Throwable t
         (log/error t (.getMessage t))
-        (error-page {:status 500
-                     :title "Something very bad has happened!"
+        (error-page {:status  500
+                     :title   "Something very bad has happened!"
                      :message "We've dispatched a team of highly trained gnomes to take care of the problem."})))))
 
 (defn wrap-csrf [handler]
@@ -32,8 +37,7 @@
     {:error-response
      (error-page
        {:status 403
-        :title "Invalid anti-forgery token"})}))
-
+        :title  "Invalid anti-forgery token"})}))
 
 (defn wrap-formats [handler]
   (let [wrapped (-> handler wrap-params (wrap-format formats/instance))]
@@ -43,13 +47,19 @@
       ((if (:websocket? request) handler wrapped) request))))
 
 (defn on-error [request response]
-  (error-page
+  (comment (error-page
     {:status 403
-     :title (str "Access to " (:uri request) " is not authorized")}))
+     :title  (str "Access to " (:uri request) " is not authorized")}))
+  (layout/render request "login.html" {:error "Permission denied. You must login!"}))
 
 (defn wrap-restricted [handler]
-  (restrict handler {:handler authenticated?
+  (println "authenticated?" authenticated?)
+  (restrict handler {:handler  authenticated?
                      :on-error on-error}))
+
+(def rules
+  [{:uri "/restricted"
+    :handler authenticated?}])
 
 (defn wrap-auth [handler]
   (let [backend (session-backend)]
@@ -57,9 +67,31 @@
         (wrap-authentication backend)
         (wrap-authorization backend))))
 
+(defn unauthorized-handler
+  [request metadata]
+  (cond
+    ;; If request is authenticated, raise 403 instead
+    ;; of 401 (because user is authenticated but permission
+    ;; denied is raised).
+    (authenticated? request)
+    (-> (layout/render request "error.html")
+        (assoc :status 403))
+    ;; In other cases, redirect the user to login page.
+    :else
+    (let [current-url (:uri request)]
+      (redirect (format "/login?next=%s" current-url)))))
+
+(def auth-backend
+  (session-backend {:unauthorized-handler unauthorized-handler}))
+
 (defn wrap-base [handler]
   (-> ((:middleware defaults) handler)
-      wrap-auth
+      ;(wrap-access-rules {:rules rules :on-error on-error})
+      ;wrap-auth
+      ;(wrap-authentication (session-backend))
+      (wrap-authorization auth-backend)
+      (wrap-authentication auth-backend)
+      wrap-params
       wrap-flash
       (wrap-session {:cookie-attrs {:http-only true}})
       (wrap-defaults

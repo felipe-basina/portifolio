@@ -14,3 +14,6 @@
 
 (defn valid-owner? [raw-pass owner]
   (hashers/check raw-pass (:owner_pass owner)))
+
+(defn same-pass? [owner-pass owner-pass-confirm]
+  (= owner-pass owner-pass-confirm))

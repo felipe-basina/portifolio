@@ -27,8 +27,8 @@
       (or (empty? found-owner)
           (not (sl/valid-pass? (:password form) found-owner)))
       (layout/render request "login.html" {:login-error "User/Password invalid!"})
-      :else (let [next-url (get-in request [:query-params :next] "/test")
-                  updated-session (assoc session :identity (:username form))]
+      :else (let [next-url (get-in request [:query-params :next] "/contact/list")
+                  updated-session (assoc session :identity (:idt (first found-owner)))]
               (-> (redirect next-url)
                   (assoc :session updated-session))))))
 

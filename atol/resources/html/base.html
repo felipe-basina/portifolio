@@ -16,8 +16,10 @@
       <nav class="navbar is-info">
           <div class="container">
               <div class="navbar-brand">
+                  {% if not identity %}
                   <a class="navbar-item" href="/" style="font-weight:bold;">atol</a>
-                  {% if identity %}
+                  {% else %}
+                  <a class="navbar-item" href="/contact/list" style="font-weight:bold;">atol</a>
                   <span class="navbar-burger burger" data-target="nav-menu">
                       <span></span>
                       <span></span>
@@ -28,7 +30,7 @@
               {% if identity %}
               <div id="nav-menu" class="navbar-menu">
                   <div class="navbar-start">
-                        <a href="/" class="navbar-item{% ifequal page "home.html" %} is-active{%endifequal%}">Home</a>
+                        <a href="/contact/list" class="navbar-item{% ifequal page "contacts/list.html" %} is-active{%endifequal%}">Contacts</a>
                         <a href="/about" class="navbar-item{% ifequal page "about.html" %} is-active{%endifequal%}">About</a>
                         <a href="/test" class="navbar-item{% ifequal page "test.html" %} is-active{%endifequal%}">Test</a>
                         <a href="/logout" class="navbar-item">Logout</a>
@@ -57,7 +59,7 @@
       })();
     </script>
 
-    
+
     {% block page-scripts %}
     {% endblock %}
   </body>

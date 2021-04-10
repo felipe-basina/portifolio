@@ -2,7 +2,7 @@
 {% block content %}
   <form action="/owner" method="POST">
     {% csrf-field %}
-    <span>User:</span>
+    <span>Name:</span>
     <input id="name" name="owner-name" type="text" value="bob" />
     {% if error.owner-name %}
       {{error.owner-name}}

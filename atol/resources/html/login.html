@@ -3,7 +3,7 @@
   <form action="/login" method="POST">
     {% csrf-field %}
     <span>User:</span>
-    <input id="name" name="id" type="text" value="bob" />
+    <input id="name" name="id" type="text" value="john.doe@domain.com" />
     {% if error.username %}
       {{error.username}}
     {% endif %}

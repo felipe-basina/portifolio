@@ -4,6 +4,7 @@
     [atol.layout :refer [error-page]]
     [atol.routes.home :refer [home-routes]]
     [atol.routes.login :refer [login-routes]]
+    [atol.routes.owner :refer [owner-routes]]
     [atol.routes.services :refer [service-routes]]
     [reitit.swagger-ui :as swagger-ui]
     [reitit.ring :as ring]
@@ -20,8 +21,9 @@
   :start
   (ring/ring-handler
     (ring/router
-      [(login-routes)
-       (home-routes)
+      [(home-routes)
+       (login-routes)
+       (owner-routes)
        (service-routes)])
     (ring/routes
       (swagger-ui/create-swagger-ui-handler

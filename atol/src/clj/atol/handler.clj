@@ -2,6 +2,7 @@
   (:require
     [atol.middleware :as middleware]
     [atol.layout :refer [error-page]]
+    [atol.routes.contact :refer [contact-routes]]
     [atol.routes.home :refer [home-routes]]
     [atol.routes.login :refer [login-routes]]
     [atol.routes.owner :refer [owner-routes]]
@@ -21,7 +22,8 @@
   :start
   (ring/ring-handler
     (ring/router
-      [(home-routes)
+      [(contact-routes)
+       (home-routes)
        (login-routes)
        (owner-routes)
        (service-routes)])

@@ -7,15 +7,12 @@
 (defn owner-init-page [request]
   (layout/render request "owner.html"))
 
-(defn form-param-value [form-params param]
-  (get form-params param))
-
 (defn extract-form-param [form-params]
   (let [[name email owner-pass owner-pass-confirm]
-        (map #(form-param-value form-params %) ["owner-name"
-                                                "email"
-                                                "owner-pass"
-                                                "owner-pass-confirm"])]
+        (map #(get form-params %) ["owner-name"
+                                   "email"
+                                   "owner-pass"
+                                   "owner-pass-confirm"])]
     (assoc {} :owner-name name
               :email email
               :owner-pass owner-pass

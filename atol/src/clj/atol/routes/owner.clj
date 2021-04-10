@@ -20,12 +20,22 @@
 (defn owner-create-handler [request]
   (let [form (extract-form-param (:form-params request))
         validate-form (so/valid-owner? form)
-        validation-errors (first validate-form)]            ; add validation for existing email!
-    (if validation-errors
+        validation-errors (first validate-form)]
+    (cond
+      validation-errors
       (layout/render request "owner.html" {:error validation-errors})
-      (do
-        (so/save-new-owner form)
-        (layout/render request "login.html" {:message "User registered successfully!"})))))
+      (not-empty (so/get-owner-by-email (:email form)))
+      (layout/render request "owner.html" {:owner-error (str "User '" (:email form) "' already exists")})
+      :else (do
+              (so/save-new-owner form)
+              (layout/render request "login.html" {:message "User registered successfully!"})))))
+
+(comment
+  (if validation-errors
+    (layout/render request "owner.html" {:error validation-errors})
+    (do
+      (so/save-new-owner form)
+      (layout/render request "login.html" {:message "User registered successfully!"}))))
 
 (defn owner-routes []
   ["/owner"

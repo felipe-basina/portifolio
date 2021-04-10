@@ -28,4 +28,7 @@
     <br/>
     <input type="submit" value="send" />
   </form>
+  {% if owner-error %}
+    {{owner-error}}
+  {% endif %}
 {% endblock %}

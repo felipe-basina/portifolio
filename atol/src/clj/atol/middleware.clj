@@ -46,14 +46,10 @@
       ;; since they're not compatible with this middleware
       ((if (:websocket? request) handler wrapped) request))))
 
-(defn on-error [request response]
-  (comment (error-page
-    {:status 403
-     :title  (str "Access to " (:uri request) " is not authorized")}))
-  (layout/render request "login.html" {:error "Permission denied. You must login!"}))
+(defn on-error [request _]
+  (layout/render request "login.html" {:login-error "Permission denied. You must login!"}))
 
 (defn wrap-restricted [handler]
-  (println "authenticated?" authenticated?)
   (restrict handler {:handler  authenticated?
                      :on-error on-error}))
 

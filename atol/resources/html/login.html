@@ -4,15 +4,23 @@
     {% csrf-field %}
     <span>User:</span>
     <input id="name" name="id" type="text" value="bob" />
+    {% if error.username %}
+      {{error.username}}
+    {% endif %}
     <br/>
     <span>Password:</span>
     <input id="secret" name="pass" type="password" value="1234" />
+    {% if error.password %}
+      {{error.password}}
+    {% endif %}
+    <br/>
     <input type="submit" value="send" />
-    {% if error %}
-      <h1>{{error}}</h1>
+    <br/>
+    {% if login-error %}
+      {{login-error}}
     {% endif %}
     {% if message %}
-      <h1>{{message}}</h1>
+      {{message}}
     {% endif %}
   </form>
   <a href="/owner/init">Register</a>

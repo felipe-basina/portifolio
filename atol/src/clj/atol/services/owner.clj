@@ -19,8 +19,5 @@
                    :owner_pass encrypted}]
     (db/create-owner! new-owner)))
 
-(defn valid-pass? [raw-pass owner]
-  (hashers/check raw-pass (:owner_pass owner)))
-
 (defn valid-owner? [owner]
   (st/validate owner owner-schema))

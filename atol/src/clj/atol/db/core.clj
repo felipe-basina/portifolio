@@ -18,7 +18,12 @@
              *db*))
   :stop (conman/disconnect! *db*))
 
-(conman/bind-connection *db* "sql/queries.sql" "sql/test-queries.sql" "sql/owner-queries.sql")
+(conman/bind-connection
+  *db*
+  "sql/queries.sql"
+  "sql/test-queries.sql"
+  "sql/owner-queries.sql"
+  "sql/contact-queries.sql")
 
 (defn pgobj->clj [^org.postgresql.util.PGobject pgobj]
   (let [type (.getType pgobj)

@@ -31,13 +31,6 @@
               (so/save-new-owner form)
               (layout/render request "login.html" {:message "User registered successfully!"})))))
 
-(comment
-  (if validation-errors
-    (layout/render request "owner.html" {:error validation-errors})
-    (do
-      (so/save-new-owner form)
-      (layout/render request "login.html" {:message "User registered successfully!"}))))
-
 (defn owner-routes []
   ["/owner"
    {:middleware [middleware/wrap-csrf

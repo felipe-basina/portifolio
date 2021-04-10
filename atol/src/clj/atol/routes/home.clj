@@ -26,8 +26,7 @@
   [""
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats
-                 middleware/wrap-restricted]
-    }
+                 middleware/wrap-restricted]}
    ;["/" {:get home-page}]
    ["/about" {:get about-page}]
    ["/test" {:get test-page}]

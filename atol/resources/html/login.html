@@ -11,5 +11,9 @@
     {% if error %}
       <h1>{{error}}</h1>
     {% endif %}
+    {% if message %}
+      <h1>{{message}}</h1>
+    {% endif %}
   </form>
+  <a href="/owner/init">Register</a>
 {% endblock %}

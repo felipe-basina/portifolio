@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+  <form action="/owner" method="POST">
+    {% csrf-field %}
+    <span>User:</span>
+    <input id="name" name="owner-name" type="text" value="bob" />
+    {% if error.owner-name %}
+      {{error.owner-name}}
+    {% endif %}
+    <br/>
+    <span>Email:</span>
+    <input id="email" name="email" type="text" value="bob@domain.com" />
+    {% if error.email %}
+      {{error.email}}
+    {% endif %}
+    <br/>
+    <span>Password:</span>
+    <input id="secret" name="owner-pass" type="password" value="1234" />
+    {% if error.owner-pass %}
+      {{error.owner-pass}}
+    {% endif %}
+    <br/>
+    <span>Confirm password:</span>
+    <input id="c-secret" name="owner-pass-confirm" type="password" value="123" />
+    {% if error.owner-pass-confirm %}
+      {{error.owner-pass-confirm}}
+    {% endif %}
+    <br/>
+    <input type="submit" value="send" />
+  </form>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Create contact</h1>
+  <div class="container">
+    <form action="/create">
+      {% csrf-field %}
+
+      <label for="contact-name">Name</label>
+      <input type="text" id="contact-name" name="contact-name" placeholder="Your name..">
+
+      <label for="contact-email">Email</label>
+      <input type="text" id="contact-email" name="contact-email" placeholder="Your Email..">
+
+      <label for="contact-phone">Phone</label>
+      <input type="text" id="contact-phone" name="contact-phone" placeholder="Your Phone..">
+
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+{% endblock %}

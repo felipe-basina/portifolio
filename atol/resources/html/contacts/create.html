@@ -1,20 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Create contact</h1>
-  <div class="form-container">
-    <form action="/create">
-      {% csrf-field %}
+<div class="form-container">
+    <h1>Create contact</h1>
 
-      <label for="contact-name">Name</label>
-      <input type="text" id="contact-name" name="contact-name" placeholder="Your name..">
+    <form action="/contact/create" method="POST">
+        {% csrf-field %}
 
-      <label for="contact-email">Email</label>
-      <input type="text" id="contact-email" name="contact-email" placeholder="Your Email..">
+        <div class="form-group">
+            <label for="contact-name">Name</label>
+            <input type="text" id="contact-name" name="contact-name" placeholder="Your name.."
+                value="Whoopss">
+            {% if error.contact-name %}
+                {{ error.contact-name }}
+            {% endif %}
+        </div>
 
-      <label for="contact-phone">Phone</label>
-      <input type="text" id="contact-phone" name="contact-phone" placeholder="Your Phone..">
+        <div class="form-group">
+            <label for="contact-email">Email</label>
+            <input type="text" id="contact-email" name="contact-email" placeholder="Your Email.."
+                value="whoopps@domain.net">
+            {% if error.contact-email %}
+                {{ error.contact-email }}
+            {% endif %}
+        </div>
 
-      <input type="submit" value="Submit">
+        <div class="form-group">
+            <label for="contact-phone">Phone</label>
+            <input type="text" id="contact-phone" name="contact-phone" placeholder="Your Phone..">
+            {% if error.contact-phone %}
+                {{ error.contact-phone }}
+            {% endif %}
+        </div>
+
+        <input type="submit" value="Submit">
     </form>
-  </div>
+    {% if message %}
+        {{ message }}
+    {% endif %}
+    {% if error %}
+        {{ error }}
+    {% endif %}
+</div>
 {% endblock %}

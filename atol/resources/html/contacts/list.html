@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Contacts</h1>
+  <h1>Contacts | <a href="/contact/add">Add contact</a></h1>
   {% for contact in contacts %}
     {{contact.contact_name}} | {{contact.email}} | {{contact.phone_number}}
+    <br>
   {% endfor %}
 {% endblock %}

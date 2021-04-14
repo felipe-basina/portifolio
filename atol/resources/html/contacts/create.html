@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <h3 class="my-4">New contact</h3>
+    <h3 class="my-4">Save contact</h3>
     <hr class="my-4"/>
 
     <form action="/contact/create" method="POST" class="m-auto">
@@ -17,7 +17,7 @@
         <div class="form-group mb-3 row">
             <label for="contact-name" class="col-md-1 col-form-label">Name</label>
             <div class="col-md-10">
-                <input type="text" class="form-control form-control-lg s-size" id="contact-name" name="contact-name" placeholder="Your name.."
+                <input type="text" class="form-control form-control-lg s-size" id="contact-name" name="contact-name" placeholder="A name.."
                        value="Whoopss" required>
                 {% if error.contact-name %}
                     <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-name }}</div>}
@@ -28,7 +28,7 @@
         <div class="form-group mb-3 row">
             <label for="contact-email" class="col-md-1 col-form-label">Email</label>
             <div class="col-md-10">
-                <input type="text" class="form-control form-control-lg s-size" id="contact-email" name="contact-email" placeholder="Your Email.."
+                <input type="text" class="form-control form-control-lg s-size" id="contact-email" name="contact-email" placeholder="An Email.."
                        value="whoopps@domain.net" required>
                 {% if error.contact-email %}
                     <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-email }}</div>
@@ -39,7 +39,7 @@
         <div class="form-group mb-3 row">
             <label for="contact-phone" class="col-md-1 col-form-label">Phone</label>
             <div class="col-md-10">
-                <input type="text" class="form-control form-control-lg s-size" id="contact-phone" name="contact-phone" placeholder="Your Phone.." required>
+                <input type="text" class="form-control form-control-lg s-size" id="contact-phone" name="contact-phone" placeholder="A Phone.." required>
                 {% if error.contact-phone %}
                     <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-phone }}</div>
                 {% endif %}

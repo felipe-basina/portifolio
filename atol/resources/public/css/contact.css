@@ -7,3 +7,9 @@
 .i-left-distance {
     margin-left: 10px;
 }
+
+.error-msg {
+    margin: 5px;
+    width: 24%;
+    padding: 2px;
+}

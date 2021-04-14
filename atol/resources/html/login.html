@@ -1,27 +1,46 @@
 {% extends "base.html" %}
 {% block content %}
-  <form action="/login" method="POST">
+<h4 class="my-4"></h4>
+<hr class="my-4"/>
+<form action="/login" method="POST" action="" class="m-auto">
     {% csrf-field %}
-    <span>User:</span>
-    <input id="name" name="id" type="text" value="john.doe@domain.com" />
-    {% if error.username %}
-      {{error.username}}
-    {% endif %}
-    <br/>
-    <span>Password:</span>
-    <input id="secret" name="pass" type="password" value="1234" />
-    {% if error.password %}
-      {{error.password}}
-    {% endif %}
-    <br/>
-    <input type="submit" value="send" />
-    <br/>
+
     {% if login-error %}
-      {{login-error}}
+    <div class="alert alert-danger">{{login-error}}</div>
     {% endif %}
+
     {% if message %}
-      {{message}}
+    <div class="alert alert-success">{{message}}</div>
     {% endif %}
-  </form>
-  <a href="/owner/init">Register</a>
+
+    <div class="form-group mb-3 row">
+        <label for="username" class="col-md-1 col-form-label">User</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control form-control-lg s-size" id="name" name="id" type="text"
+                   value="john.doe@domain.com" required>
+            {% if error.username %}
+            <div class="col-md-1 alert alert-danger error-msg">{{error.username}}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="form-group mb-3 row">
+        <label for="password" class="col-md-1 col-form-label">Password</label>
+        <div class="col-md-10">
+            <input type="password" class="form-control form-control-lg s-size" id="secret" name="pass" type="password"
+                   value="1234" required>
+            {% if error.password %}
+            <div class="col-md-1 alert alert-danger error-msg">{{error.password}}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr class="my-4"/>
+    <div class="form-group mb-3 row">
+        <label for="enter" class="col-md-5 col-form-label"></label>
+        <div class="col-md-7">
+            <button class="btn btn-primary" type="submit">enter</button> <a href="/owner/init" class="btn btn-info">Register</a>
+        </div>
+    </div>
+</form>
 {% endblock %}

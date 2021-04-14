@@ -1,44 +1,57 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="form-container">
-    <h1>Create contact</h1>
+    <h3 class="my-4">New contact</h3>
+    <hr class="my-4"/>
 
-    <form action="/contact/create" method="POST">
+    <form action="/contact/create" method="POST" class="m-auto">
         {% csrf-field %}
 
-        <div class="form-group">
-            <label for="contact-name">Name</label>
-            <input type="text" id="contact-name" name="contact-name" placeholder="Your name.."
-                value="Whoopss">
-            {% if error.contact-name %}
-                {{ error.contact-name }}
-            {% endif %}
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        {% if message %}
+            <div class="alert alert-primary">{{ message }}</div>
+        {% endif %}
+
+        <div class="form-group mb-3 row">
+            <label for="contact-name" class="col-md-1 col-form-label">Name</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control form-control-lg s-size" id="contact-name" name="contact-name" placeholder="Your name.."
+                       value="Whoopss" required>
+                {% if error.contact-name %}
+                    <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-name }}</div>}
+                {% endif %}
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="contact-email">Email</label>
-            <input type="text" id="contact-email" name="contact-email" placeholder="Your Email.."
-                value="whoopps@domain.net">
-            {% if error.contact-email %}
-                {{ error.contact-email }}
-            {% endif %}
+        <div class="form-group mb-3 row">
+            <label for="contact-email" class="col-md-1 col-form-label">Email</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control form-control-lg s-size" id="contact-email" name="contact-email" placeholder="Your Email.."
+                       value="whoopps@domain.net" required>
+                {% if error.contact-email %}
+                    <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-email }}</div>
+                {% endif %}
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="contact-phone">Phone</label>
-            <input type="text" id="contact-phone" name="contact-phone" placeholder="Your Phone..">
-            {% if error.contact-phone %}
-                {{ error.contact-phone }}
-            {% endif %}
+        <div class="form-group mb-3 row">
+            <label for="contact-phone" class="col-md-1 col-form-label">Phone</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control form-control-lg s-size" id="contact-phone" name="contact-phone" placeholder="Your Phone.." required>
+                {% if error.contact-phone %}
+                    <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-phone }}</div>
+                {% endif %}
+            </div>
         </div>
 
-        <input type="submit" value="Submit">
+        <hr class="my-4"/>
+        <div class="form-group mb-3 row">
+            <label for="save-btn" class="col-md-5 col-form-label"></label>
+            <div class="col-md-7">
+                <button class="btn btn-primary btn-lg" type="submit">save</button>
+            </div>
+        </div>
     </form>
-    {% if message %}
-        {{ message }}
-    {% endif %}
-    {% if error %}
-        {{ error }}
-    {% endif %}
-</div>
 {% endblock %}

@@ -1,8 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Contacts | <a href="/contact/add">Add contact</a></h1>
-  {% for contact in contacts %}
-    {{contact.contact_name}} | {{contact.email}} | {{contact.phone_number}}
-    <br>
-  {% endfor %}
+<h3 class="my-4">Contacts | <a href="/contact/add">Add contact</a></h3>
+<hr class="my-4"/>
+<form action="" class="m-auto" style="max-width:600px">
+    <div class="form-group mb-3 row">
+        <div class="col-md-12 side-by-side">
+            <select class="form-select custom-select custom-select-lg s-size" id="type2">
+                <option>name</option>
+                <option>email</option>
+                <option>phone</option>
+            </select>
+            <input type="text" class="form-control form-control-lg i-left-distance" id="value3" name="value">
+            <button class="btn btn-primary btn-lg i-left-distance" type="submit">go</button>
+        </div>
+    </div>
+</form>
+<form action="" class="m-auto">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">name</th>
+            <th scope="col">email</th>
+            <th scope="col">phone</th>
+            <th scope="col">actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for contact in contacts %}
+        <tr>
+            <th scope="row">{{contact.contact_name}}</th>
+            <td>{{contact.email}}</td>
+            <td>{{contact.phone_number}}</td>
+            <td>edit | delete</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</form>
 {% endblock %}

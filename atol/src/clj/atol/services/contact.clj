@@ -18,8 +18,18 @@
 (defn get-contacts-by-owner-id [owner-id]
   (db/get-contacts {:owner_idt owner-id}))
 
+(defn get-contact-by-id [id owner_id]
+  (db/get-contact {:idt id :owner_idt owner_id}))
+
 (defn create-contact! [contact owner_idt]
   (db/create-contact! {:contact_name (:contact-name contact)
                        :email        (:contact-email contact)
                        :phone_number (:contact-phone contact)
                        :owner_idt    owner_idt}))
+
+(defn update-contact! [contact]
+  (println "the contact for update" contact)
+  (db/update-contact! {:contact_name (:contact-name contact)
+                       :email        (:contact-email contact)
+                       :phone_number (:contact-phone contact)
+                       :idt          (:idt contact)}))

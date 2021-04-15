@@ -24,3 +24,9 @@ update t_contact set
     phone_number = :phone_number,
     update_dt = current_timestamp
 WHERE idt = :idt
+
+-- :name delete-contact :? :1
+-- :doc removes contact record given it's idt
+DELETE FROM t_contact
+WHERE idt = :idt
+AND owner_idt = :owner_idt

@@ -16,6 +16,10 @@
     </div>
 </form>
 
+{% if contact-error %}
+<div class="alert alert-danger">{{ contact-error }}</div>
+{% endif %}
+
 {% if message %}
 <div class="alert alert-primary">{{ message }}</div>
 {% endif %}
@@ -36,7 +40,7 @@
             <th scope="row">{{contact.contact_name}}</th>
             <td>{{contact.email}}</td>
             <td>{{contact.phone_number}}</td>
-            <td><a href="/contact/update/{{contact.idt}}">edit</a> | delete</td>
+            <td><a href="/contact/update/{{contact.idt}}">edit</a> | <a href="/contact/delete/{{contact.idt}}">delete</a></td>
         </tr>
         {% endfor %}
         </tbody>

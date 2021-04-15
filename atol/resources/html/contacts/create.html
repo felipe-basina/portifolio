@@ -3,31 +3,34 @@
     <h3 class="my-4">Save contact</h3>
     <hr class="my-4"/>
 
-{% if contact.idt %}
-    <form action="/contact/update" method="POST" class="m-auto">
-{% else %}
-    <form action="/contact/create" method="POST" class="m-auto">
-{% endif %}
+    <form {% if contact.idt %}
+            action="/contact/update"
+          {% else %}
+            action="/contact/create"
+          {% endif %}
+          method="POST" class="m-auto">
 
         {% csrf-field %}
 
-        {% if error %}
-            <div class="alert alert-danger">{{ error }} {{contact}}</div>
+        {% if contact-error %}
+         <div class="alert alert-danger">{{ contact-error }}</div>
         {% endif %}
 
         {% if message %}
             <div class="alert alert-primary">{{ message }}</div>
         {% endif %}
 
-        <input type="hidden" id="idt" name="idt" value={{contact.idt}} />
+        {% if contact.idt %}
+            <input type="hidden" id="idt" name="idt" value={{contact.idt}} />
+        {% endif %}
 
         <div class="form-group mb-3 row">
             <label for="contact-name" class="col-md-1 col-form-label">Name</label>
             <div class="col-md-10">
-                <input type="text" class="form-control form-control-lg s-size" id="contact-name" name="contact-name" placeholder="A name.."
+                <input type="text" class="form-control form-control-lg s-size" id="contact-name" name="contact_name" placeholder="A name.."
                        required value={{contact.contact_name}}>
-                {% if error.contact-name %}
-                    <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-name }}</div>}
+                {% if error.contact_name %}
+                    <div class="col-md-1 alert alert-danger error-msg">{{ error.contact_name }}</div>
                 {% endif %}
             </div>
         </div>
@@ -35,10 +38,10 @@
         <div class="form-group mb-3 row">
             <label for="contact-email" class="col-md-1 col-form-label">Email</label>
             <div class="col-md-10">
-                <input type="text" class="form-control form-control-lg s-size" id="contact-email" name="contact-email" placeholder="An Email.."
+                <input type="text" class="form-control form-control-lg s-size" id="contact-email" name="email" placeholder="An Email.."
                        required value={{contact.email}}>
-                {% if error.contact-email %}
-                    <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-email }}</div>
+                {% if error.email %}
+                    <div class="col-md-1 alert alert-danger error-msg">{{ error.email }}</div>
                 {% endif %}
             </div>
         </div>
@@ -46,10 +49,10 @@
         <div class="form-group mb-3 row">
             <label for="contact-phone" class="col-md-1 col-form-label">Phone</label>
             <div class="col-md-10">
-                <input type="text" class="form-control form-control-lg s-size" id="contact-phone" name="contact-phone" placeholder="A Phone.."
+                <input type="text" class="form-control form-control-lg s-size" id="contact-phone" name="phone_number" placeholder="A Phone.."
                        required value={{contact.phone_number}}>
-                {% if error.contact-phone %}
-                    <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-phone }}</div>
+                {% if error.phone_number %}
+                    <div class="col-md-1 alert alert-danger error-msg">{{ error.phone_number }}</div>
                 {% endif %}
             </div>
         </div>

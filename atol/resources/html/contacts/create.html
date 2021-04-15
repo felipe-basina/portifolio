@@ -3,22 +3,29 @@
     <h3 class="my-4">Save contact</h3>
     <hr class="my-4"/>
 
+{% if contact.idt %}
+    <form action="/contact/update" method="POST" class="m-auto">
+{% else %}
     <form action="/contact/create" method="POST" class="m-auto">
+{% endif %}
+
         {% csrf-field %}
 
         {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
+            <div class="alert alert-danger">{{ error }} {{contact}}</div>
         {% endif %}
 
         {% if message %}
             <div class="alert alert-primary">{{ message }}</div>
         {% endif %}
 
+        <input type="hidden" id="idt" name="idt" value={{contact.idt}} />
+
         <div class="form-group mb-3 row">
             <label for="contact-name" class="col-md-1 col-form-label">Name</label>
             <div class="col-md-10">
                 <input type="text" class="form-control form-control-lg s-size" id="contact-name" name="contact-name" placeholder="A name.."
-                       value="Whoopss" required>
+                       required value={{contact.contact_name}}>
                 {% if error.contact-name %}
                     <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-name }}</div>}
                 {% endif %}
@@ -29,7 +36,7 @@
             <label for="contact-email" class="col-md-1 col-form-label">Email</label>
             <div class="col-md-10">
                 <input type="text" class="form-control form-control-lg s-size" id="contact-email" name="contact-email" placeholder="An Email.."
-                       value="whoopps@domain.net" required>
+                       required value={{contact.email}}>
                 {% if error.contact-email %}
                     <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-email }}</div>
                 {% endif %}
@@ -39,7 +46,8 @@
         <div class="form-group mb-3 row">
             <label for="contact-phone" class="col-md-1 col-form-label">Phone</label>
             <div class="col-md-10">
-                <input type="text" class="form-control form-control-lg s-size" id="contact-phone" name="contact-phone" placeholder="A Phone.." required>
+                <input type="text" class="form-control form-control-lg s-size" id="contact-phone" name="contact-phone" placeholder="A Phone.."
+                       required value={{contact.phone_number}}>
                 {% if error.contact-phone %}
                     <div class="col-md-1 alert alert-danger error-msg">{{ error.contact-phone }}</div>
                 {% endif %}
@@ -50,7 +58,11 @@
         <div class="form-group mb-3 row">
             <label for="save-btn" class="col-md-5 col-form-label"></label>
             <div class="col-md-7">
-                <button class="btn btn-primary btn-lg" type="submit">save</button>
+                {% if contact.idt %}
+                    <button class="btn btn-secondary btn-lg" type="submit">update</button>
+                {% else %}
+                    <button class="btn btn-primary btn-lg" type="submit">save</button>
+                {% endif %}
             </div>
         </div>
     </form>

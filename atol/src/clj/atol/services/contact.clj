@@ -28,8 +28,13 @@
                        :owner_idt    owner_idt}))
 
 (defn update-contact! [contact]
-  (println "the contact for update" contact)
   (db/update-contact! {:contact_name (:contact_name contact)
                        :email        (:email contact)
                        :phone_number (:phone_number contact)
                        :idt          (:idt contact)}))
+
+(defn delete-contact! [id owner_id]
+  (db/delete-contact {:idt id :owner_idt owner_id}))
+
+(defn deleted? [contact]
+  (> (:next.jdbc/update-count contact) 0))

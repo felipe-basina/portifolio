@@ -32,10 +32,10 @@
         owner_id (:identity session)]
     (cond
       validation-errors
-      (layout/render request "contacts/create.html" {:error validation-errors
+      (layout/render request "contacts/create.html" {:error   validation-errors
                                                      :contact (:form-params request)})
       (nil? (sc/valid-phone? form))
-      (layout/render request "contacts/create.html" {:error (assoc {} :phone_number "Should be a valid phone number!")
+      (layout/render request "contacts/create.html" {:error   (assoc {} :phone_number "Should be a valid phone number!")
                                                      :contact (:form-params request)})
       :else (do
               (sc/create-contact! form owner_id)
@@ -64,12 +64,23 @@
       validation-errors
       (layout/render request "contacts/create.html" {:error validation-errors :contact (:form-params request)})
       (nil? (sc/valid-phone? form))
-      (layout/render request "contacts/create.html" {:error (assoc {} :phone_number "Should be a valid phone number!")
+      (layout/render request "contacts/create.html" {:error   (assoc {} :phone_number "Should be a valid phone number!")
                                                      :contact (:form-params request)})
       :else (do
               (sc/update-contact! (assoc form :idt contact-id))
-              (layout/render request "contacts/list.html" {:message "Contact updated successfully!"
+              (layout/render request "contacts/list.html" {:message  "Contact updated successfully!"
                                                            :contacts (get-contacts-by-owner request)})))))
+
+(defn contact-delete-handler [request]
+  (let [session (:session request)
+        owner_id (:identity session)
+        contact_id (get-id-from-params (:path-params request))
+        contact (sc/delete-contact! contact_id owner_id)]
+    (if (sc/deleted? contact)
+      (layout/render request "contacts/list.html" {:message  "Contact deleted successfully!"
+                                                   :contacts (get-contacts-by-owner request)})
+      (layout/render request "contacts/list.html" {:contact-error (str "Contact not found")
+                                                   :contacts (get-contacts-by-owner request)}))))
 
 (defn contact-routes []
   ["/contact"
@@ -80,5 +91,6 @@
    ["/add" {:get contact-add-handler}]
    ["/create" {:post contact-create-handler}]
    ["/update/:idt" {:get get-for-update-handler}]
-   ["/update" {:post contact-update-handler}]])
+   ["/update" {:post contact-update-handler}]
+   ["/delete/:idt" {:get contact-delete-handler}]])
 

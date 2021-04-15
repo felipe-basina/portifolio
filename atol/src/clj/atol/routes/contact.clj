@@ -16,12 +16,12 @@
   (layout/render request "contacts/create.html"))
 
 (defn extract-form-param [form-params]
-  (let [[name email phone] (map #(get form-params %) ["contact-name"
-                                                      "contact-email"
-                                                      "contact-phone"])]
-    (assoc {} :contact-name name
-              :contact-email email
-              :contact-phone phone)))
+  (let [[name email phone] (map #(get form-params %) ["contact_name"
+                                                      "email"
+                                                      "phone_number"])]
+    (assoc {} :contact_name name
+              :email email
+              :phone_number phone)))
 
 (defn contact-create-handler
   [request]
@@ -32,9 +32,11 @@
         owner_id (:identity session)]
     (cond
       validation-errors
-      (layout/render request "contacts/create.html" {:error validation-errors})
+      (layout/render request "contacts/create.html" {:error validation-errors
+                                                     :contact (:form-params request)})
       (nil? (sc/valid-phone? form))
-      (layout/render request "contacts/create.html" {:error (assoc {} :contact-phone "Should be a valid phone number!")})
+      (layout/render request "contacts/create.html" {:error (assoc {} :phone_number "Should be a valid phone number!")
+                                                     :contact (:form-params request)})
       :else (do
               (sc/create-contact! form owner_id)
               (layout/render request "contacts/create.html" {:message "Contact created successfully!"})))))
@@ -51,7 +53,7 @@
         contact (sc/get-contact-by-id contact_id owner_id)]
     (if contact
       (layout/render request "contacts/create.html" {:contact contact})
-      (layout/render request "contacts/create.html" {:error (str "Contact not found")}))))
+      (layout/render request "contacts/create.html" {:contact-error (str "Contact not found")}))))
 
 (defn contact-update-handler [request]
   (let [contact-id (Integer/parseInt (get (:form-params request) "idt"))
@@ -62,7 +64,7 @@
       validation-errors
       (layout/render request "contacts/create.html" {:error validation-errors :contact (:form-params request)})
       (nil? (sc/valid-phone? form))
-      (layout/render request "contacts/create.html" {:error (assoc {} :contact-phone "Should be a valid phone number!")
+      (layout/render request "contacts/create.html" {:error (assoc {} :phone_number "Should be a valid phone number!")
                                                      :contact (:form-params request)})
       :else (do
               (sc/update-contact! (assoc form :idt contact-id))

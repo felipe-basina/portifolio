@@ -2,7 +2,8 @@
 {% block content %}
 <h3 class="my-4">Contacts | <a href="/contact/add">Add contact</a></h3>
 <hr class="my-4"/>
-<form action="" class="m-auto" style="max-width:600px">
+<form action="/contact/filter" method="POST" class="m-auto" style="max-width:600px">
+    {% csrf-field %}
     <div class="form-group mb-3 row">
         <div class="col-md-12 side-by-side">
             <input type="text" class="form-control form-control-lg i-left-distance" id="filter" name="filter"
@@ -31,14 +32,20 @@
         </tr>
         </thead>
         <tbody>
-        {% for contact in contacts %}
-        <tr>
-            <th scope="row">{{contact.contact_name}}</th>
-            <td>{{contact.email}}</td>
-            <td>{{contact.phone_number}}</td>
-            <td><a href="/contact/update/{{contact.idt}}">edit</a> | <a href="/contact/delete/{{contact.idt}}">delete</a></td>
-        </tr>
-        {% endfor %}
+        {% if contacts|count > 0 %}
+            {% for contact in contacts %}
+            <tr>
+                <th scope="row">{{contact.contact_name}}</th>
+                <td>{{contact.email}}</td>
+                <td>{{contact.phone_number}}</td>
+                <td><a href="/contact/update/{{contact.idt}}">edit</a> | <a href="/contact/delete/{{contact.idt}}">delete</a></td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td class="no-contacts" colspan="4">No contacts :-(</td>
+            </tr>
+        {% endif %}
         </tbody>
     </table>
 </form>

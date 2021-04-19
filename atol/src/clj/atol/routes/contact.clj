@@ -4,10 +4,11 @@
     [atol.middleware :as middleware]
     [atol.services.contact :as sc]))
 
+(defn owner-id [request]
+  (:identity (:session request)))
+
 (defn get-contacts-by-owner [request]
-  (let [session (:session request)
-        owner_id (:identity session)]
-    (sc/get-contacts-by-owner-id owner_id)))
+  (sc/get-contacts-by-owner-id (owner-id request)))
 
 (defn contact-init-page [request]
   (layout/render request "contacts/list.html" {:contacts (get-contacts-by-owner request)}))
@@ -80,7 +81,15 @@
       (layout/render request "contacts/list.html" {:message  "Contact deleted successfully!"
                                                    :contacts (get-contacts-by-owner request)})
       (layout/render request "contacts/list.html" {:contact-error (str "Contact not found")
-                                                   :contacts (get-contacts-by-owner request)}))))
+                                                   :contacts      (get-contacts-by-owner request)}))))
+
+(defn contact-filter-handler [request]
+  (let [filter (get (:form-params request) "filter")
+        owner_id (owner-id request)]
+    (if (not-empty filter)
+      (let [filtered-contacts (sc/get-contacts-by-filter filter owner_id)]
+        (layout/render request "contacts/list.html" {:contacts filtered-contacts}))
+      (layout/render request "contacts/list.html" {:contacts (get-contacts-by-owner request)}))))
 
 (defn contact-routes []
   ["/contact"
@@ -92,5 +101,6 @@
    ["/create" {:post contact-create-handler}]
    ["/update/:idt" {:get get-for-update-handler}]
    ["/update" {:post contact-update-handler}]
-   ["/delete/:idt" {:get contact-delete-handler}]])
+   ["/delete/:idt" {:get contact-delete-handler}]
+   ["/filter" {:post contact-filter-handler}]])
 

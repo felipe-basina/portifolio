@@ -13,3 +13,8 @@
     width: 24%;
     padding: 2px;
 }
+
+.no-contacts {
+    text-align: center !important;
+    color: red;
+}

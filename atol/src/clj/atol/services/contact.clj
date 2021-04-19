@@ -38,3 +38,10 @@
 
 (defn deleted? [contact]
   (> (:next.jdbc/update-count contact) 0))
+
+(defn get-contacts-by-filter [filter owner_idt]
+  (let [filter-token (str "%" filter "%")]
+    (db/filter-contacts {:contact_name filter-token
+                         :email        filter-token
+                         :phone_number filter-token
+                         :owner_idt    owner_idt})))

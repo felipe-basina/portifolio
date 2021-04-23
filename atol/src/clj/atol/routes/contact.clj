@@ -2,7 +2,8 @@
   (:require
     [atol.layout :as layout]
     [atol.middleware :as middleware]
-    [atol.services.contact :as sc]))
+    [atol.services.contact :as sc]
+    [atol.tags.contact :all tg]))
 
 (defn owner-id [request]
   (:identity (:session request)))

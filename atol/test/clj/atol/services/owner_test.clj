@@ -1,5 +1,6 @@
 (ns atol.services.owner-test
-  (:require [atol.services.owner :as os]
+  (:require [atol.db.core :as db]
+            [atol.services.owner :as os]
             [clojure.test :refer :all]))
 
 (def owner {:owner-name         "Aname"
@@ -38,3 +39,18 @@
     (let [owner (assoc owner :owner-pass-confirm "123")
           validation-errors (os/valid-owner? owner)]
       (validate-owner validation-errors :owner-pass-confirm "does not match"))))
+
+(deftest test-save-new-owner
+  (testing "save new owner"
+    (with-redefs [db/create-owner! (fn [_] 1)]
+      (is (= 1 (os/save-new-owner owner))))))
+
+(deftest test-get-owner-by-email
+  (testing "get owner by email"
+    (with-redefs [db/get-owner (fn [_] (dissoc owner :owner-pass-confirm))]
+      (let [owner-found (os/get-owner-by-email (:email owner))]
+        (is (not-empty owner-found))
+        (is (contains? owner-found :owner-name))
+        (is (contains? owner-found :email))
+        (is (contains? owner-found :owner-pass))
+        (is (not (contains? owner-found :owner-pass-confirm)))))))

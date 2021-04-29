@@ -43,3 +43,9 @@
       (let [found-contact (sc/get-contact-by-id 1 1001)]
         (is (not-empty found-contact))
         (is (= contact found-contact))))))
+
+(deftest test-create-contact
+  (testing "check create contact"
+    (with-redefs [db/create-contact! (fn [_] 1)]
+      (let [total-created (sc/create-contact! contact 1001)]
+        (is (= total-created 1))))))

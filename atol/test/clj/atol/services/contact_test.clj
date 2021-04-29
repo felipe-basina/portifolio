@@ -64,12 +64,12 @@
 
 (deftest test-success-delete-contact
   (testing "check success delete contact"
-    (let [contact (assoc {} :next.jdbc/update-count 1)]
+    (let [contact (assoc contact :next.jdbc/update-count 1)]
       (is (sc/deleted? contact)))))
 
 (deftest test-fail-delete-contact
   (testing "check fail delete contact"
-    (let [contact (assoc {} :next.jdbc/update-count 0)]
+    (let [contact (assoc contact :next.jdbc/update-count 0)]
       (is (not (sc/deleted? contact))))))
 
 (deftest test-get-contacts-by-filter

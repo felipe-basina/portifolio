@@ -17,3 +17,12 @@
     (let [contact (assoc contact :email "contact.name")
           validation-errors (sc/valid-contact? contact)]
       (validate-domain validation-errors :email "must be a valid email"))))
+
+(deftest test-valid-phone
+  (testing "check whether is a valid phone number"
+    (is (not-empty (sc/valid-phone? contact)))))
+
+(deftest test-invalid-phone
+  (testing "check whether is an invalid phone number"
+    (let [contact (assoc contact :phone_number "111999")]
+      (is (nil? (sc/valid-phone? contact))))))

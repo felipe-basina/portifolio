@@ -56,3 +56,8 @@
       (with-redefs [db/update-contact! (fn [_] 1)]
         (let [total-updated (sc/update-contact! contact)]
           (is (= total-updated 1)))))))
+
+(deftest test-delete-contact
+  (testing "check delete contact"
+    (with-redefs [db/delete-contact (fn [_] nil)]
+      (is (nil? (sc/delete-contact! 1 1001))))))

@@ -61,3 +61,13 @@
   (testing "check delete contact"
     (with-redefs [db/delete-contact (fn [_] nil)]
       (is (nil? (sc/delete-contact! 1 1001))))))
+
+(deftest test-success-delete-contact
+  (testing "check success delete contact"
+    (let [contact (assoc {} :next.jdbc/update-count 1)]
+      (is (sc/deleted? contact)))))
+
+(deftest test-fail-delete-contact
+  (testing "check fail delete contact"
+    (let [contact (assoc {} :next.jdbc/update-count 0)]
+      (is (not (sc/deleted? contact))))))

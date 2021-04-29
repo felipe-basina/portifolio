@@ -2,7 +2,7 @@
 This project aims to provide a web solution for saving phones contacts number. There is nothing special when it's about features, instead it is about the technologies used that makes this project special :-)
 
 # Incentive
-We, as developers, when willing learning a new programming language, we used to try out some code developing **general purposes applications**, and of one the simplest way of doing that is to write a CRUD web application so with this, allowing us to use resources as HTTP requests/responses, handling errors, parsing forms, database integrations, and the lines keeps going further...
+We, as developers, when willing learning a new programming language, we used to try out some code developing **general purposes applications**, and one of the simplest way of doing that is to write a CRUD web application so with this, allowing us to use resources as HTTP requests/responses, handling errors, parsing forms, database integrations, and the lines keeps going further...
 
 During my **Clojure** studies and journey I found myself searching from a lot of different websites pursuiting some examples on how to create a full CRUD web application starting from the basics of integrating HTML as web pages going through to the not so problematic-database-operations (CREATE, READ, UPDATE, DELETE). But instead of seeing any code with all of this items I just have found fragments on how to do that, not the entire application with all its integrations and particularities.
 

@@ -49,3 +49,10 @@
     (with-redefs [db/create-contact! (fn [_] 1)]
       (let [total-created (sc/create-contact! contact 1001)]
         (is (= total-created 1))))))
+
+(deftest test-update-contact
+  (testing "check update contact"
+    (let [contact (assoc contact :idt 1)]
+      (with-redefs [db/update-contact! (fn [_] 1)]
+        (let [total-updated (sc/update-contact! contact)]
+          (is (= total-updated 1)))))))

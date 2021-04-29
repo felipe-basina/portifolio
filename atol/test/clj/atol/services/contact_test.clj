@@ -73,9 +73,10 @@
       (is (not (sc/deleted? contact))))))
 
 (deftest test-get-contacts-by-filter
-  (with-redefs [db/filter-contacts (fn [_] (conj [] contact))]
-    (let [found-contacts (sc/get-contacts-by-filter "Name" 1001)]
-      (is (not-empty found-contacts))
-      (is (= 1 (count found-contacts)))
-      (is (vector? found-contacts))
-      (is (= contact (first found-contacts))))))
+  (testing "check get contacts by filter"
+    (with-redefs [db/filter-contacts (fn [_] (conj [] contact))]
+      (let [found-contacts (sc/get-contacts-by-filter "Name" 1001)]
+        (is (not-empty found-contacts))
+        (is (= 1 (count found-contacts)))
+        (is (vector? found-contacts))
+        (is (= contact (first found-contacts)))))))

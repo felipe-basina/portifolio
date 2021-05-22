@@ -1,0 +1,10 @@
+{"transaction": {"merchant": "Burger King", "amount": 20, "time": "2019-02-12T10:00:00.000Z"}}
+{"account": {"active-card": true, "available-limit": 100}}
+{"transaction": {"merchant": "Burger King", "amount": 20, "time": "2019-02-12T10:00:00.000Z"}}
+{"transaction": {"merchant": "Habbib's", "amount": 90, "time": "2019-02-12T10:01:12.000Z"}}
+{"account": {"active-card": true, "available-limit": 350}}
+{"transaction": {"merchant": "Burger King", "amount": 10, "time": "2019-02-13T10:00:00.000Z"}}
+{"transaction": {"merchant": "Habbib's", "amount": 10, "time": "2019-02-13T10:01:12.000Z"}}
+{"transaction": {"merchant": "Pizza Hut", "amount": 10, "time": "2019-02-13T10:01:25.000Z"}}
+{"transaction": {"merchant": "Pizza Hut", "amount": 10, "time": "2019-02-13T10:01:35.000Z"}}
+{"transaction": {"merchant": "Habbib's", "amount": 32, "time":"2019-02-13T10:03:28.000Z"}}

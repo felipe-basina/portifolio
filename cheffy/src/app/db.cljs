@@ -1,4 +1,5 @@
-(ns app.db)
+(ns app.db
+  (:require [re-frame.core :as rf]))
 
 (def initial-app-db {:auth    {:uid nil}
                      :errors  {}
@@ -286,3 +287,9 @@
                                                       :inboxes {"mike@mailinator.com" {:id            :inbox-02
                                                                                        :notifications 6
                                                                                        :updated-at    1538697210537}}}}})
+
+;; This is used to load all data in the browser for development and debugging purposes
+(rf/reg-event-db
+  :initialize-db
+  (fn [_ _]
+      initial-app-db))

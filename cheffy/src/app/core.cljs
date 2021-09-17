@@ -5,6 +5,7 @@
     ;; -- more to come --
             [app.nav.views.nav :refer [nav]]
             [app.nav.events]
+            [app.nav.subs]
             [app.theme :refer [cheffy-theme]]
     ;; This is a react component so it needs to be imported using ""
             ["@smooth-ui/core-sc" :refer [Normalize ThemeProvider Button]]))

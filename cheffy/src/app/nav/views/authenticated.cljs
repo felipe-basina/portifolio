@@ -5,7 +5,8 @@
 
 (defn authenticated
       []
-      (let [nav-items [{:id       :saved
+      (let [active-nav @(rf/subscribe [:active-nav])        ;; The return of rf/subscribe is an ATOM, so it is needed to deferred it to get the values
+            nav-items [{:id       :saved
                         :name     "Saved"
                         :href     "#saved"
                         :dispatch #(rf/dispatch [:set-active-nav :saved])}
@@ -28,5 +29,11 @@
            [:> Box {:display         "flex"
                     :justify-content "flex-end"
                     :py              1}
-            (for [item nav-items]
-                 [nav-item item])]))
+            (for [{:keys [id name href dispatch]} nav-items]
+                 ;; ^{:key (:id item)}                         ;; Added metadata to set the unique id of the component
+                 [nav-item {:key        id
+                            :id         id
+                            :name       name
+                            :href       href
+                            :dispatch   dispatch
+                            :active-nav active-nav}])]))

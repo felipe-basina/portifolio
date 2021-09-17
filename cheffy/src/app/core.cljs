@@ -2,7 +2,9 @@
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
             [app.db]
+    ;; -- more to come --
             [app.nav.views.nav :refer [nav]]
+            [app.nav.events]
             [app.theme :refer [cheffy-theme]]
     ;; This is a react component so it needs to be imported using ""
             ["@smooth-ui/core-sc" :refer [Normalize ThemeProvider Button]]))

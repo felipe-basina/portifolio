@@ -5,7 +5,7 @@
 (defn nav
       "Redirects to the properly view accordingly to the authentication process"
       []
-      (let [user true]
+      (let [user false]
            (if user
-             authenticated
-             public)))
+             [authenticated]
+             [public])))

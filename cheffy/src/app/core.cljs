@@ -2,20 +2,42 @@
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
             [app.db]
-    ;; -- more to come --
+    ;; -- profile --
+            [app.auth.views.profile :refer [profile]]
+    ;; -- become-a-chef --
+            [app.become-a-chef.views.become-a-chef :refer [become-a-chef]]
+    ;; -- inboxes --
+            [app.inbox.views.inboxes :refer [inboxes]]
+    ;; -- nav --
             [app.nav.views.nav :refer [nav]]
             [app.nav.events]
             [app.nav.subs]
+    ;; -- recipe --
+            [app.recipes.views.recipes :refer [recipes]]
             [app.theme :refer [cheffy-theme]]
     ;; This is a react component so it needs to be imported using ""
-            ["@smooth-ui/core-sc" :refer [Normalize ThemeProvider Button]]))
+            ["@smooth-ui/core-sc" :refer [Normalize ThemeProvider Grid Row Col]]))
+
+(defn pages
+      [page-name]
+      (case page-name
+            :profile [profile]
+            :become-a-chef [become-a-chef]
+            :inboxes [inboxes]
+            :recipes [recipes]
+            [recipes]))
 
 (defn app
       []
-      [:<>                                                  ;; This is a react 'fragment' which allows to return more than 1 component | It can be replaced by 'div'
-       [:> Normalize]                                       ;; Same as (r/adapt-react-class Normalize) | (r/adapt-react-class Button)
-       [:> ThemeProvider {:theme cheffy-theme}
-        [nav]]])
+      (let [active-nav @(rf/subscribe [:active-nav])]
+           [:<>                                             ;; This is a react 'fragment' which allows to return more than 1 component | It can be replaced by 'div'
+            [:> Normalize]                                  ;; Same as (r/adapt-react-class Normalize) | (r/adapt-react-class Button)
+            [:> ThemeProvider {:theme cheffy-theme}
+             [:> Grid {:fluid false}                        ;; fluid = false will not take the full screen
+              [:> Row
+               [:> Col
+                [nav]
+                [pages active-nav]]]]]]))
 
 (defn ^:dev/after-load start
       []

@@ -1,5 +1,6 @@
-(ns app.inbox.views.inboxes)
+(ns app.inbox.views.inboxes
+      (:require [app.components.page-nav :refer [page-nav]]))
 
 (defn inboxes
       []
-      [:div "inboxes"])
+      [page-nav {:center "Inbox"}])

@@ -1,5 +1,6 @@
-(ns app.auth.views.profile)
+(ns app.auth.views.profile
+  (:require [app.components.page-nav :refer [page-nav]]))
 
 (defn profile
       []
-      [:div "profle"])
+      [page-nav {:center "Profile"}])

@@ -2,8 +2,10 @@
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
             [app.db]
-    ;; -- profile --
+    ;; -- auths --
+            [app.auth.views.log-in :refer [log-in]]
             [app.auth.views.profile :refer [profile]]
+            [app.auth.views.sign-up :refer [sign-up]]
     ;; -- become-a-chef --
             [app.become-a-chef.views.become-a-chef :refer [become-a-chef]]
     ;; -- inboxes --
@@ -21,7 +23,9 @@
 (defn pages
       [page-name]
       (case page-name
+            :log-in [log-in]
             :profile [profile]
+            :sign-up [sign-up]
             :become-a-chef [become-a-chef]
             :inboxes [inboxes]
             :recipes [recipes]

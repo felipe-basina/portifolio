@@ -1,11 +1,12 @@
 (ns app.nav.views.nav
-  (:require [app.nav.views.authenticated :refer [authenticated]]
+  (:require [re-frame.core :as rf]
+            [app.nav.views.authenticated :refer [authenticated]]
             [app.nav.views.public :refer [public]]))
 
 (defn nav
       "Redirects to the properly view accordingly to the authentication process"
       []
-      (let [user false]
-           (if user
+      (let [logged-in? @(rf/subscribe [:logged-in?])]
+           (if logged-in?
              [authenticated]
              [public])))

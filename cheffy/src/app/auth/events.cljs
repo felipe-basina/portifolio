@@ -1,5 +1,5 @@
 (ns app.auth.events
-  (:require [re-frame.core :refer [reg-event-fx]]))
+  (:require [re-frame.core :refer [reg-event-fx reg-event-db]]))
 
 ;; Will allow to return multiple events (= effects) as cofx (= maps of events)
 (reg-event-fx                                               ;; Using 'reg-event-fx' instead of 'reg-event-db' will allow to dispatch another event from this one (this one = event)
@@ -35,3 +35,26 @@
                                                :saved   #{}
                                                :inboxes {}}))
        :dispatch [:set-active-nav :saved]}))
+
+(reg-event-fx
+  :logout
+  (fn [{:keys [db]} _]
+      {:db       (assoc-in db [:auth :uid] nil)
+       :dispatch [:set-active-nav :recipes]}))
+
+;; The update-in will allow to keep all the remain values in the map the same while updating only the specific keys
+;; So it merges only the specific values into the existing map
+(reg-event-db
+  :update-profile
+  (fn [db [_ profile]]
+      (let [uid (get-in db [:auth :uid])]
+           (update-in db [:users uid :profile] merge (select-keys profile [:first-name :last-name])))))
+
+(reg-event-fx
+  :delete-account
+  (fn [{:keys [db]} _]
+      (let [uid (get-in db [:auth :uid])]
+           {:db       (-> db
+                          (assoc-in [:auth :uid] nil)
+                          (update-in [:users] dissoc uid))
+            :dispatch [:set-active-nav :recipes]})))

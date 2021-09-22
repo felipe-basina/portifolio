@@ -45,10 +45,10 @@
 
 (defn ^:dev/after-load start
       []
-      (rf/dispatch-sync [:initialize-db])                   ;; It runs async, so to guarantee all data will be available before rendering we need to force to be sync
       (r/render [app]
                 (.getElementById js/document "app")))
 
 (defn ^:export init
       []
+      (rf/dispatch-sync [:initialize-db])                   ;; It runs async, so to guarantee all data will be available before rendering we need to force to be sync
       (start))

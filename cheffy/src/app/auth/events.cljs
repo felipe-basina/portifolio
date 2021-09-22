@@ -19,3 +19,19 @@
                                               (assoc-in [:auth :uid] email)
                                               (update-in [:errors] dissoc :email))
                                 :dispatch [:set-active-nav :saved]}))))
+
+;; TODO: add validation to guarantee unique email
+(reg-event-fx
+  :sign-up
+  (fn [{:keys [db]} [_ {:keys [first-name last-name email password]}]]
+      {:db       (-> db
+                     (assoc-in [:auth :uid] email)
+                     (assoc-in [:users email] {:id      email
+                                               :profile {:first-name first-name
+                                                         :last-name  last-name
+                                                         :email      email
+                                                         :password   password
+                                                         :image      "img/avatar.jpg"}
+                                               :saved   #{}
+                                               :inboxes {}}))
+       :dispatch [:set-active-nav :saved]}))

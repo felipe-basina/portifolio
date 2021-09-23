@@ -16,6 +16,7 @@
 (def set-user-interceptors [(after set-user-ls!)])
 (def remove-user-interceptors [(after remove-user-ls!)])
 
+;; It is used to inject content into the cofx map
 (reg-cofx
   :local-store-user
   (fn [cofx _]

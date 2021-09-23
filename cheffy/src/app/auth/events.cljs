@@ -1,5 +1,6 @@
 (ns app.auth.events
-  (:require [re-frame.core :refer [reg-event-fx reg-event-db after]]))
+  (:require [re-frame.core :refer [reg-event-fx reg-event-db after reg-cofx]]
+            [cljs.reader :refer [read-string]]))
 
 (def cheffy-user-key "cheffy-user")
 
@@ -14,6 +15,12 @@
 
 (def set-user-interceptors [(after set-user-ls!)])
 (def remove-user-interceptors [(after remove-user-ls!)])
+
+(reg-cofx
+  :local-store-user
+  (fn [cofx _]
+      (assoc cofx :local-store-user (read-string
+                                      (.getItem js/localStorage cheffy-user-key)))))
 
 ;; The following two db events are a bad solution to interact with localStorage because
 ;; they have side effects = not being pure functions

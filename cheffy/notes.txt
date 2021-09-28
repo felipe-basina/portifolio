@@ -1,0 +1,7 @@
+reg-event-db: Used when needed to manage the state (modifications on application states). It takes a db as arguments and returns a db (db -> db)
+
+reg-event-fx: It takes a cofx and returns a fx (cofx -> fx). Used when needed to extend the cofx arguments
+
+reg-cofx (Sometimes needs external information e.g. info obtained from local storage:, inject-cofx
+
+reg-fx (generates a list of fx, extending the map returned by fx)

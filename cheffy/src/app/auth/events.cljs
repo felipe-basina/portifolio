@@ -63,24 +63,26 @@
   :sign-up
   set-user-interceptors                                     ;; Added an interceptor
   (fn [{:keys [db]} [_ {:keys [first-name last-name email password]}]]
-      {:db       (-> db
-                     (assoc-in [:auth :uid] email)
-                     (assoc-in [:users email] {:id      email
-                                               :profile {:first-name first-name
-                                                         :last-name  last-name
-                                                         :email      email
-                                                         :password   password
-                                                         :image      "img/avatar.jpg"}
-                                               :saved   #{}
-                                               :inboxes {}}))
-       :dispatch [:set-active-nav :saved]}))
+      {:db          (-> db
+                        (assoc-in [:auth :uid] email)
+                        (assoc-in [:users email] {:id      email
+                                                  :profile {:first-name first-name
+                                                            :last-name  last-name
+                                                            :email      email
+                                                            :password   password
+                                                            :image      "img/avatar.jpg"}
+                                                  :saved   #{}
+                                                  :inboxes {}}))
+       :dispatch    [:set-active-nav :saved]
+       :navigate-to {:path "/recipes"}}))
 
 (reg-event-fx
   :logout
   remove-user-interceptors
   (fn [{:keys [db]} _]
-      {:db       (assoc-in db [:auth :uid] nil)
-       :dispatch [:set-active-nav :recipes]}))
+      {:db          (assoc-in db [:auth :uid] nil)
+       :dispatch    [:set-active-nav :recipes]
+       :navigate-to {:path "/recipes"}}))
 
 ;; The update-in will allow to keep all the remain values in the map the same while updating only the specific keys
 ;; So it merges only the specific values into the existing map
@@ -95,7 +97,8 @@
   remove-user-interceptors
   (fn [{:keys [db]} _]
       (let [uid (get-in db [:auth :uid])]
-           {:db       (-> db
-                          (assoc-in [:auth :uid] nil)
-                          (update-in [:users] dissoc uid))
-            :dispatch [:set-active-nav :recipes]})))
+           {:db          (-> db
+                             (assoc-in [:auth :uid] nil)
+                             (update-in [:users] dissoc uid))
+            :dispatch    [:set-active-nav :recipes]
+            :navigate-to {:path "/recipes"}})))

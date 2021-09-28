@@ -2,6 +2,7 @@
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
             [app.db]
+            [app.router :as router]
     ;; -- auths --
             [app.auth.views.log-in :refer [log-in]]
             [app.auth.views.profile :refer [profile]]
@@ -52,5 +53,6 @@
 
 (defn ^:export init
       []
+      (router/start!)
       (rf/dispatch-sync [:initialize-db])                   ;; It runs async, so to guarantee all data will be available before rendering we need to force to be sync
       (start))

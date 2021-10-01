@@ -36,7 +36,7 @@
 
 (defn app
       []
-      (let [active-nav @(rf/subscribe [:active-nav])]
+      (let [active-page @(rf/subscribe [:active-page])]
            [:<>                                             ;; This is a react 'fragment' which allows to return more than 1 component | It can be replaced by 'div'
             [:> Normalize]                                  ;; Same as (r/adapt-react-class Normalize) | (r/adapt-react-class Button)
             [:> ThemeProvider {:theme cheffy-theme}
@@ -44,7 +44,7 @@
               [:> Row
                [:> Col
                 [nav]
-                [pages active-nav]]]]]]))
+                [pages active-page]]]]]]))
 
 (defn ^:dev/after-load start
       []

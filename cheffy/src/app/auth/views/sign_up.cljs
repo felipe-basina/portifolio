@@ -1,6 +1,7 @@
 (ns app.auth.views.sign-up
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
+            [app.router :as router]
             [app.components.page-nav :refer [page-nav]]
             [app.components.form-group :refer [form-group]]
             ["@smooth-ui/core-sc" :refer [Row Col FormGroup Label Input Button Box]]))
@@ -33,8 +34,8 @@
                           :justify-content "space-between"}
                   [:> Box {:py 1
                            :pr 2}
-                   [:a {:href     "#log-in"
-                        :on-click #(rf/dispatch [:set-active-nav :log-in])}
+                   [:a {:href     (router/path-for :log-in)
+                        :on-click #(rf/dispatch [:set-active-page :log-in])}
                     "Already have an account? Log in!"]]
                   [:> Box
                    [:> Button {:on-click #(rf/dispatch [:sign-up @values])}

@@ -53,10 +53,11 @@
              (not correct-password?)
              {:db (assoc-in db [:errors :email] "Wrong password")}
 
-             correct-password? {:db       (-> db
-                                              (assoc-in [:auth :uid] email)
-                                              (update-in [:errors] dissoc :email))
-                                :dispatch [:set-active-nav :saved]}))))
+             correct-password? {:db          (-> db
+                                                 (assoc-in [:auth :uid] email)
+                                                 (update-in [:errors] dissoc :email))
+                                :dispatch    [:set-active-nav :saved]
+                                :navigate-to {:path "/saved"}}))))
 
 ;; TODO: add validation to guarantee unique email
 (reg-event-fx
@@ -74,7 +75,7 @@
                                                   :saved   #{}
                                                   :inboxes {}}))
        :dispatch    [:set-active-nav :saved]
-       :navigate-to {:path "/recipes"}}))
+       :navigate-to {:path "/saved"}}))
 
 (reg-event-fx
   :logout

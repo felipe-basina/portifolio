@@ -20,6 +20,7 @@
        (pushy/pushy dispatch match)))
 
 (defn start!
+      "Adds an event listener to all click events, which dispatches on all matched routes"
       []
       (pushy/start! history))
 

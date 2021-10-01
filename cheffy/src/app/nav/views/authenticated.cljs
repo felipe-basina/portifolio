@@ -6,35 +6,35 @@
 
 (defn authenticated
       []
-      (let [active-nav @(rf/subscribe [:active-nav])        ;; The return of rf/subscribe is an ATOM, so it is needed to deferred it to get the values
+      (let [active-page @(rf/subscribe [:active-page])      ;; The return of rf/subscribe is an ATOM, so it is needed to deferred it to get the values
             nav-items [{:id       :saved
                         :name     "Saved"
                         :href     (router/path-for :saved)
-                        :dispatch #(rf/dispatch [:set-active-nav :saved])}
+                        :dispatch #(rf/dispatch [:set-active-page :saved])}
                        {:id       :recipes
                         :name     "Recipes"
                         :href     (router/path-for :recipes)
-                        :dispatch #(rf/dispatch [:set-active-nav :recipes])}
+                        :dispatch #(rf/dispatch [:set-active-page :recipes])}
                        {:id       :inboxes
                         :name     "Inbox"
                         :href     (router/path-for :inboxes)
-                        :dispatch #(rf/dispatch [:set-active-nav :inboxes])}
+                        :dispatch #(rf/dispatch [:set-active-page :inboxes])}
                        {:id       :become-a-chef
                         :name     "Chef"
                         :href     (router/path-for :become-a-chef)
-                        :dispatch #(rf/dispatch [:set-active-nav :become-a-chef])}
+                        :dispatch #(rf/dispatch [:set-active-page :become-a-chef])}
                        {:id       :profile
                         :name     "Profile"
                         :href     (router/path-for :profile)
-                        :dispatch #(rf/dispatch [:set-active-nav :profile])}]]
+                        :dispatch #(rf/dispatch [:set-active-page :profile])}]]
            [:> Box {:display         "flex"
                     :justify-content "flex-end"
                     :py              1}
             (for [{:keys [id name href dispatch]} nav-items]
                  ;; ^{:key (:id item)}                         ;; Added metadata to set the unique id of the component
-                 [nav-item {:key        id
-                            :id         id
-                            :name       name
-                            :href       href
-                            :dispatch   dispatch
-                            :active-nav active-nav}])]))
+                 [nav-item {:key         id
+                            :id          id
+                            :name        name
+                            :href        href
+                            :dispatch    dispatch
+                            :active-page active-page}])]))

@@ -10,15 +10,15 @@
             nav-items [{:id       :recipes
                         :name     "Recipes"
                         :href     (router/path-for :recipes)
-                        :dispatch #(rf/dispatch [:set-active-page :recipes])}
+                        :dispatch #(rf/dispatch [:set-active-nav :recipes])}
                        {:id       :become-a-chef
                         :name     "Chef"
                         :href     (router/path-for :become-a-chef)
-                        :dispatch #(rf/dispatch [:set-active-page :become-a-chef])}
+                        :dispatch #(rf/dispatch [:set-active-nav :become-a-chef])}
                        {:id       :sign-up
                         :name     "Sign up"
                         :href     (router/path-for :sign-up)
-                        :dispatch #(rf/dispatch [:set-active-page :sign-up])}
+                        :dispatch #(rf/dispatch [:set-active-nav :sign-up])}
                        {:id       :log-in
                         :name     "Login"
                         :href     (router/path-for :log-in)

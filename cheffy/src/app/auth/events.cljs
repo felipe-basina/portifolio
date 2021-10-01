@@ -42,7 +42,7 @@
 (reg-event-fx                                               ;; Using 'reg-event-fx' instead of 'reg-event-db' will allow to dispatch another event from this one (this one = event)
   :log-in
   set-user-interceptors
-  ;; cofx {:db db :dispatch [:set-active-nav :saved]}
+  ;; cofx {:db db :dispatch [:set-active-page :saved]}
   (fn [{:keys [db]} [_ {:keys [email password]}]]
       (let [user (get-in db [:users email])
             correct-password? (= (get-in user [:profile :password]) password)]
@@ -56,7 +56,7 @@
              correct-password? {:db          (-> db
                                                  (assoc-in [:auth :uid] email)
                                                  (update-in [:errors] dissoc :email))
-                                :dispatch    [:set-active-nav :saved]
+                                :dispatch    [:set-active-page :saved]
                                 :navigate-to {:path "/saved"}}))))
 
 ;; TODO: add validation to guarantee unique email
@@ -74,7 +74,7 @@
                                                             :image      "img/avatar.jpg"}
                                                   :saved   #{}
                                                   :inboxes {}}))
-       :dispatch    [:set-active-nav :saved]
+       :dispatch    [:set-active-page :saved]
        :navigate-to {:path "/saved"}}))
 
 (reg-event-fx
@@ -82,7 +82,7 @@
   remove-user-interceptors
   (fn [{:keys [db]} _]
       {:db          (assoc-in db [:auth :uid] nil)
-       :dispatch    [:set-active-nav :recipes]
+       :dispatch    [:set-active-page :recipes]
        :navigate-to {:path "/recipes"}}))
 
 ;; The update-in will allow to keep all the remain values in the map the same while updating only the specific keys
@@ -101,5 +101,5 @@
            {:db          (-> db
                              (assoc-in [:auth :uid] nil)
                              (update-in [:users] dissoc uid))
-            :dispatch    [:set-active-nav :recipes]
+            :dispatch    [:set-active-page :recipes]
             :navigate-to {:path "/recipes"}})))

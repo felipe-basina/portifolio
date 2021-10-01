@@ -8,6 +8,11 @@
       (assoc-in db [:nav :active-nav] active-nav)))
 
 (reg-event-db
+  :set-active-page
+  (fn [db [_ active-page]]
+      (assoc-in db [:nav :active-page] active-page)))
+
+(reg-event-db
   :route-changed
   (fn [db [_ {:keys [handler]}]]
       (assoc-in db [:nav :active-page] handler)))

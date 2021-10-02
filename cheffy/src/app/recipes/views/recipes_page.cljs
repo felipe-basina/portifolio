@@ -1,6 +1,7 @@
 (ns app.recipes.views.recipes-page
   (:require [re-frame.core :as rf]
             [app.components.page-nav :refer [page-nav]]
+            [app.recipes.views.recipe-list :refer [recipe-list]]
             ["@smooth-ui/core-sc" :refer [Typography]]))
 
 (defn recipes-page
@@ -11,15 +12,15 @@
            [:<>
             [page-nav {:center "Recipes"}]
             (when (seq drafts)                              ; Checks if the collections is not nil
-                  [:> Typography {:variant     "h4"
-                                  :py          20
-                                  :font-weight 700}
-                   "Drafts"])
-            #_[recipe-list drafts]
+                  [:<>
+                   [:> Typography {:variant     "h4"
+                                   :py          20
+                                   :font-weight 700}
+                    "Drafts"]
+                   [recipe-list drafts]])
             (when logged-in?
                   [:> Typography {:variant     "h4"
                                   :py          20
                                   :font-weight 700}
                    "Public"])
-            #_[recipe-list drafts]
-            ]))
+            [recipe-list public]]))

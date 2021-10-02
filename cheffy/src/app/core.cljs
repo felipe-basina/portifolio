@@ -18,7 +18,8 @@
             [app.nav.events]
             [app.nav.subs]
     ;; -- recipe --
-            [app.recipes.views.recipes :refer [recipes]]
+            [app.recipes.views.recipes-page :refer [recipes-page]]
+            [app.recipes.subs]
             [app.theme :refer [cheffy-theme]]
     ;; This is a react component so it needs to be imported using ""
             ["@smooth-ui/core-sc" :refer [Normalize ThemeProvider Grid Row Col]]))
@@ -31,8 +32,8 @@
             :sign-up [sign-up]
             :become-a-chef [become-a-chef]
             :inboxes [inboxes]
-            :recipes [recipes]
-            [recipes]))
+            :recipes [recipes-page]
+            [recipes-page]))
 
 (defn app
       []

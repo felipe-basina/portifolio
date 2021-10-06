@@ -7,7 +7,7 @@
 (defn recipe-card
       [{:keys [id name saved-count prep-time img]}]
       [:> Box {:as    "a"                                   ; Transforming this div on a link
-               :href  (router/path-for :recipes)
+               :href  (router/path-for :recipe :recipe-id id)
                :class "recipe-card"}
        [:> Box {:class            "img-card"
                 :background-image (str "url(" (or img "/img/placeholder.jpg") ")")

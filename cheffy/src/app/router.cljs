@@ -24,9 +24,21 @@
       []
       (pushy/start! history))
 
-(defn path-for
-      [route]
-      (bidi/path-for routes route))
+;; Before allowing multiple parameters
+(comment
+  defn path-for
+  [route]
+  (bidi/path-for routes route))
+
+;; Use the '&' to indicate it can receive multiple parameters
+;; Solution 1
+(comment
+  defn path-for
+  [& route]
+  (apply bidi/path-for routes route))
+
+;; Solution 2 using partial
+(def path-for (partial bidi/path-for routes))
 
 (defn set-token!
       [token]

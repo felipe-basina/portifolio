@@ -21,6 +21,7 @@
             [app.recipes.views.recipes-page :refer [recipes-page]]
             [app.recipes.views.recipe-page :refer [recipe-page]]
             [app.recipes.subs]
+            [app.recipes.events]
             [app.theme :refer [cheffy-theme]]
     ;; This is a react component so it needs to be imported using ""
             ["@smooth-ui/core-sc" :refer [Normalize ThemeProvider Grid Row Col]]))

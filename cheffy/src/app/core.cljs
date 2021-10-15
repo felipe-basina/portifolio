@@ -19,6 +19,7 @@
             [app.nav.subs]
     ;; -- recipe --
             [app.recipes.views.recipes-page :refer [recipes-page]]
+            [app.recipes.views.recipe-page :refer [recipe-page]]
             [app.recipes.subs]
             [app.theme :refer [cheffy-theme]]
     ;; This is a react component so it needs to be imported using ""
@@ -33,6 +34,7 @@
             :become-a-chef [become-a-chef]
             :inboxes [inboxes]
             :recipes [recipes-page]
+            :recipe [recipe-page]
             [recipes-page]))
 
 (defn app

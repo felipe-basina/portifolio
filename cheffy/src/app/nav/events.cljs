@@ -23,3 +23,13 @@
   :navigate-to                                              ;; (:navigate-to {:path "/saved})
   (fn [{:keys [path]}]
       (router/set-token! path)))
+
+(reg-event-db
+  :close-modal
+  (fn [db _]
+      (assoc-in db [:nav :active-modal] nil)))
+
+(reg-event-db
+  :open-modal
+  (fn [db [_ modal-name]]
+      (assoc-in db [:nav :active-modal] modal-name)))

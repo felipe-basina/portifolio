@@ -21,7 +21,7 @@
                                                        :measure (str/trim measure)}])
                      (reset! values initial-values))
             ingredients @(rf/subscribe [:ingredients])
-            author? @(rf/subscribe [:author])]
+            author? @(rf/subscribe [:author?])]
            (fn []
                [:> Box {:background-color "white"
                         :border-radius    10
@@ -66,7 +66,7 @@
                                                            :type   "text"
                                                            :values values}]]]
                                             [form-group {:id     :name
-                                                         :label  "Namet"
+                                                         :label  "Name"
                                                          :type   "text"
                                                          :values values}]]
                                :footer     [:<>

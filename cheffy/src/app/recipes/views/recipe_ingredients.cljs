@@ -1,7 +1,7 @@
 (ns app.recipes.views.recipe-ingredients
   (:require [re-frame.core :as rf]
             [reagent.core :as r]
-            [clojure.str :as str]
+            [clojure.string :as str]
             [app.components.modal :refer [modal]]
             [app.components.form-group :refer [form-group]]
             ["@smooth-ui/core-sc" :refer [Box Typography Row Col Button]]
@@ -11,7 +11,7 @@
       []
       (let [initial-values {:id nil :amount 0 :measure "" :name ""}
             values (r/atom initial-values)
-            open-modal (fn [{:keys [modal-name ingredients]}]
+            open-modal (fn [{:keys [modal-name ingredient]}]
                            (rf/dispatch [:open-modal modal-name])
                            (reset! values ingredient))
             save (fn [{:keys [id amount measure name]}]

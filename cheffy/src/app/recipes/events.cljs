@@ -1,5 +1,6 @@
 (ns app.recipes.events
-  (:require [re-frame.core :refer [reg-event-db reg-event-fx]]))
+  (:require [clojure.string :as str]
+            [re-frame.core :refer [reg-event-db reg-event-fx]]))
 
 (reg-event-db
   :save-recipe
@@ -48,3 +49,26 @@
                                                                    :order order
                                                                    :desc  desc})
             :dispatch [:close-modal]})))
+
+(reg-event-fx
+  :upsert-recipe
+  (fn [{:keys [db]} [_ {:keys [name prep-time]}]]
+      (let [recipe-id (get-in db [:nav :active-recipe])
+            id (or recipe-id (keyword (str "recipe-" (random-uuid))))
+            uid (get-in db [:auth :uid])]
+           {:db       (update-in db [:recipes id] merge {:id        id
+                                                         :name      name
+                                                         :prep-time prep-time
+                                                         :cook      uid
+                                                         :public?   false})
+            :dispatch [:close-modal]})))
+
+;; Dispatches "n" events, then redirect the user to route /recipes/
+(reg-event-fx
+  :delete-recipe
+  (fn [{:keys [db]} _]
+      (let [recipe-id (get-in db [:nav :active-recipe])]
+           {:db          (update-in db [:recipes] dissoc recipe-id)
+            :dispatch-n  [[:set-active-page :recipes]
+                          [:set-active-nav :recipes]]
+            :navigate-to {:path "/recipes/"}})))

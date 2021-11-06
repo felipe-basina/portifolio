@@ -18,10 +18,12 @@
                           :href       (router/path-for left)}
                [:> ChevronLeft {:size 16}]])]
        [:> Box
-        [:> Typography {:variant     "h2"
-                        :py          20
-                        :font-weight 700}
-         center]]
+        (if (string? center)
+          [:> Typography {:variant     "h2"
+                          :py          20
+                          :font-weight 700}
+           center]
+          center)]
        [:> Box
         (when right
               right)]])

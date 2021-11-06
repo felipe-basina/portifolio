@@ -11,6 +11,7 @@
             [app.auth.subs]
     ;; -- become-a-chef --
             [app.become-a-chef.views.become-a-chef :refer [become-a-chef]]
+            [app.become-a-chef.events]
     ;; -- inboxes --
             [app.inbox.views.inboxes :refer [inboxes]]
     ;; -- nav --

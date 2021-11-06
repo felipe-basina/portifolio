@@ -4,7 +4,8 @@
             [clojure.string :as str]
             [app.components.modal :refer [modal]]
             [app.components.form-group :refer [form-group]]
-            ["@smooth-ui/core-sc" :refer [Row Col Button Typography]]))
+            ["@smooth-ui/core-sc" :refer [Row Col Button Typography]]
+            ["styled-icons/fa-solid/Plus" :refer [Plus]]))
 
 (defn recipe-editor
       []
@@ -18,16 +19,21 @@
                                                    :prep-time (js/parseInt prep-time)}])
                      (reset! values initial-values))]
            (fn []
-               (let [{:keys [name prep-time]} @(rf/subscribe [:recipe])]
+               (let [{:keys [name prep-time]} @(rf/subscribe [:recipe])
+                     active-page @(rf/subscribe [:active-page])]
                     [:<>
-                     [:> Typography {:variant     "h2"
-                                     :py          20
-                                     :class       "editable"
-                                     :font-weight 700
-                                     :on-click    #(open-modal {:modal-name :recipe-editor
-                                                                :recipe     {:name      name
-                                                                             :prep-time prep-time}})}
-                      name]
+                     (if (= active-page :recipe)
+                       [:> Typography {:variant     "h2"
+                                       :py          20
+                                       :class       "editable"
+                                       :font-weight 700
+                                       :on-click    #(open-modal {:modal-name :recipe-editor
+                                                                  :recipe     {:name      name
+                                                                               :prep-time prep-time}})}
+                        name]
+                       [:> Button {:on-click #(open-modal {:modal-name :recipe-editor
+                                                           :recipe     initial-values})}
+                        [:> Plus {:size 16}]])
                      [modal {:modal-name :recipe-editor
                              :header     "Recipe"
                              :body       [:> Row

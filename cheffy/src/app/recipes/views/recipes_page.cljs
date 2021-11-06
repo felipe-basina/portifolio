@@ -2,6 +2,7 @@
   (:require [re-frame.core :as rf]
             [app.components.page-nav :refer [page-nav]]
             [app.recipes.views.recipe-list :refer [recipe-list]]
+            [app.recipes.views.recipe-editor :refer [recipe-editor]]
             ["@smooth-ui/core-sc" :refer [Typography]]))
 
 (defn recipes-page
@@ -10,7 +11,8 @@
             drafts @(rf/subscribe [:drafts])
             logged-in? @(rf/subscribe [:logged-in?])]
            [:<>
-            [page-nav {:center "Recipes"}]
+            [page-nav {:center "Recipes"
+                       :right  (when logged-in? [recipe-editor])}]
             (when (seq drafts)                              ; Checks if the collections is not nil
                   [:<>
                    [:> Typography {:variant     "h4"

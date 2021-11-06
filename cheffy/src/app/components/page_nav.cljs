@@ -1,5 +1,6 @@
 (ns app.components.page-nav
-  (:require ["@smooth-ui/core-sc" :refer [Box Button Typography]]
+  (:require [app.router :as router]
+            ["@smooth-ui/core-sc" :refer [Box Button Typography]]
             ["styled-icons/fa-solid/ChevronLeft" :refer [ChevronLeft]]))
 
 (defn page-nav
@@ -14,7 +15,7 @@
                           :my         20
                           :variant    "light"
                           :aria-label "Back"
-                          :href       left}
+                          :href       (router/path-for left)}
                [:> ChevronLeft {:size 16}]])]
        [:> Box
         [:> Typography {:variant     "h2"

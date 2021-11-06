@@ -46,3 +46,11 @@
            (->> steps
                 (vals)
                 (sort-by :order)))))
+
+(reg-sub
+  :saved
+  (fn [db _]
+      (let [uid (get-in db [:auth :uid])
+            saved (get-in db [:users uid :saved])
+            recipes (vals (get-in db [:recipes]))]
+           (filter #(contains? saved (:id %)) recipes))))

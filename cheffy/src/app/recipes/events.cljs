@@ -70,5 +70,6 @@
       (let [recipe-id (get-in db [:nav :active-recipe])]
            {:db          (update-in db [:recipes] dissoc recipe-id)
             :dispatch-n  [[:set-active-page :recipes]
-                          [:set-active-nav :recipes]]
+                          [:set-active-nav :recipes]
+                          [:close-modal]]
             :navigate-to {:path "/recipes/"}})))

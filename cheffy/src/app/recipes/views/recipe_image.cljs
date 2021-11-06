@@ -10,7 +10,6 @@
       []
       (let [initial-values {:img ""}
             values (r/atom initial-values)
-            {:keys [img cook name]} @(rf/subscribe [:recipe])
             author? @(rf/subscribe [:author?])
             open-modal (fn [{:keys [modal-name recipe]}]
                            (rf/dispatch [:open-modal modal-name])
@@ -19,25 +18,26 @@
                      (rf/dispatch [:upsert-image img])
                      (reset! values initial-values))]
            (fn []
-               [:<>                                         ;; Fragment
-                [:> Box {:class            (when author? "editable")
-                         :background-image (str "url(" (or img "/img/placeholder.jpg") ")")
-                         :background-size  "cover"
-                         :min-height       "400px"
-                         :border-radius    10
-                         :alt              name
-                         :on-click         (when author? #(open-modal {:modal-name :image-editor
-                                                                       :recipe     {:img img}}))}]
-                (when author?
-                      [modal {:modal-name :image-editor
-                              :header     "Image"
-                              :body       [form-group {:id     :img
-                                                       :label  "URL"
-                                                       :type   "text"
-                                                       :values values}]
-                              :footer     [:<>
-                                           [:> Button {:on-click #(rf/dispatch [:close-modal])
-                                                       :variant  "light"}
-                                            "Cancel"]
-                                           [:> Button {:on-click #(save @values)}
-                                            "Save"]]}])])))
+               (let [{:keys [img cook name]} @(rf/subscribe [:recipe])]
+                    [:<>                                    ;; Fragment
+                     [:> Box {:class            (when author? "editable")
+                              :background-image (str "url(" (or img "/img/placeholder.jpg") ")")
+                              :background-size  "cover"
+                              :min-height       "400px"
+                              :border-radius    10
+                              :alt              name
+                              :on-click         (when author? #(open-modal {:modal-name :image-editor
+                                                                            :recipe     {:img img}}))}]
+                     (when author?
+                           [modal {:modal-name :image-editor
+                                   :header     "Image"
+                                   :body       [form-group {:id     :img
+                                                            :label  "URL"
+                                                            :type   "text"
+                                                            :values values}]
+                                   :footer     [:<>
+                                                [:> Button {:on-click #(rf/dispatch [:close-modal])
+                                                            :variant  "light"}
+                                                 "Cancel"]
+                                                [:> Button {:on-click #(save @values)}
+                                                 "Save"]]}])]))))

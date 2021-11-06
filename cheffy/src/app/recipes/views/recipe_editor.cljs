@@ -23,9 +23,7 @@
                      active-page @(rf/subscribe [:active-page])]
                     [:<>
                      (if (= active-page :recipe)
-                       [:> Typography {:variant     "h2"
-                                       :py          20
-                                       :class       "editable"
+                       [:> Typography {:class       "editable"
                                        :font-weight 700
                                        :on-click    #(open-modal {:modal-name :recipe-editor
                                                                   :recipe     {:name      name

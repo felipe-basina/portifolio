@@ -88,3 +88,10 @@
       (let [recipe-id (get-in db [:nav :active-recipe])]
            {:db       (assoc-in db [:recipes recipe-id :public?] false)
             :dispatch [:close-modal]})))
+
+(reg-event-fx
+  :upsert-image
+  (fn [{:keys [db]} [_ {:keys [img]}]]
+      (let [recipe-id (get-in db [:nav :active-recipe])]
+           {:db       (assoc-in db [:recipes recipe-id :img] img)
+            :dispatch [:close-modal]})))

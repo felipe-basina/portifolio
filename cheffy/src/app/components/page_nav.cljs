@@ -6,7 +6,8 @@
       [{:keys [left center right]}]
       [:> Box {:py              20
                :display         "flex"                      ;; Shows elements horizontally
-               :justify-content "space-between"}
+               :justify-content "space-between"
+               :align-items     "center"}
        [:> Box
         (when left
               [:> Button {:as         "a"

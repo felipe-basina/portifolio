@@ -3,6 +3,7 @@
             [re-frame.core :as rf]
             [app.components.modal :refer [modal]]
             [app.components.form-group :refer [form-group]]
+            [app.helpers :as h]
             ["@smooth-ui/core-sc" :refer [Button Box]]))
 
 (defn publish-recipe
@@ -19,8 +20,9 @@
                (let [{:keys [price public?]} @(rf/subscribe [:recipe])]
                     [:> Box
                      (cond
-                       public? [:> Button {:on-click #(open-modal {:modal-name :publish-recipe})}
-                                price]
+                       public? [:> Button {:on-click #(open-modal {:modal-name :publish-recipe
+                                                                   :recipe     {:price price}})}
+                                (h/format-price price)]
                        (not public?) [:> Button {:on-click #(open-modal {:modal-name :publish-recipe
                                                                          :recipe     {:price price}})}
                                       "Publish"])

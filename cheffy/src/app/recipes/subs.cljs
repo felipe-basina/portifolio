@@ -37,3 +37,12 @@
            (->> ingredients
                 (vals)
                 (sort-by :order)))))
+
+(reg-sub
+  :steps
+  (fn [db _]
+      (let [active-recipe (get-in db [:nav :active-recipe])
+            steps (get-in db [:recipes active-recipe :steps])]
+           (->> steps
+                (vals)
+                (sort-by :order)))))

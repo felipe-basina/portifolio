@@ -63,7 +63,6 @@
                                         :steps       {:step-01 {:id    :step-01
                                                                 :order 1
                                                                 :desc  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras massa orci, imperdiet sit amet ultricies vitae, consectetur nec est. Proin laoreet odio elit, vel rutrum tortor finibus non. Etiam auctor lorem eget diam sollicitudin condimentum. Nam quis posuere diam. Nulla vel arcu ac eros vestibulum accumsan in quis eros."}
-
                                                       :step-02 {:id    :step-02
                                                                 :order 2
                                                                 :desc  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras massa orci, imperdiet sit amet ultricies vitae, consectetur nec est. Proin laoreet odio elit, vel rutrum tortor finibus non. Etiam auctor lorem eget diam sollicitudin condimentum. Nam quis posuere diam. Nulla vel arcu ac eros vestibulum accumsan in quis eros."}

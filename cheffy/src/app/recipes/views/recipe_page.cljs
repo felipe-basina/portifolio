@@ -4,6 +4,7 @@
             [app.recipes.views.recipe-info :refer [recipe-info]]
             [app.recipes.views.recipe-image :refer [recipe-image]]
             [app.recipes.views.recipe-ingredients :refer [recipe-ingredients]]
+            [app.recipes.views.recipe-steps :refer [recipe-steps]]
             ["@smooth-ui/core-sc" :refer [Box Row Col]]))
 
 (defn recipe-page
@@ -22,4 +23,4 @@
                 [recipe-ingredients]]]
               [:> Col {:xs 12 :sm 6}
                [:> Box {:pb 20}
-                "recipe-steps"]]]]]))
+                [recipe-steps]]]]]]))

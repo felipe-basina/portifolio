@@ -10,7 +10,6 @@
 (defn inbox-card
       [{:keys [uid-inbox inbox-id notifications? notifications updated-at]}]
       (let [user-image @(rf/subscribe [:user-image uid-inbox])]
-
            [:> Box {:as       "a"
                     :class    "inbox-card"
                     :href     (router/path-for :inbox :inbox-id inbox-id)

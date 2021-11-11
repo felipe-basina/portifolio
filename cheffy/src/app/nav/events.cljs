@@ -17,7 +17,8 @@
   (fn [db [_ {:keys [handler route-params]}]]
       (-> db
           (assoc-in [:nav :active-page] handler)
-          (assoc-in [:nav :active-recipe] (keyword (:recipe-id route-params))))))
+          (assoc-in [:nav :active-recipe] (keyword (:recipe-id route-params)))
+          (assoc-in [:nav :active-inbox] (keyword (:inbox-id route-params))))))
 
 (reg-fx
   :navigate-to                                              ;; (:navigate-to {:path "/saved})

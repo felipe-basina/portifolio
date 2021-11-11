@@ -14,6 +14,7 @@
             [app.become-a-chef.events]
     ;; -- inboxes --
             [app.inbox.views.inboxes-page :refer [inboxes-page]]
+            [app.inbox.views.inbox-page :refer [inbox-page]]
             [app.inbox.subs]
             [app.inbox.events]
     ;; -- nav --
@@ -37,6 +38,7 @@
             :profile [profile]
             :sign-up [sign-up]
             :become-a-chef [become-a-chef]
+            :inbox [inbox-page]
             :inboxes [inboxes-page]
             :recipes [recipes-page]
             :recipe [recipe-page]

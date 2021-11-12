@@ -13,10 +13,10 @@
       (let [uid (get-in db [:auth :uid])
             notifications-count (get-in db [:users notify :inboxes uid :notifications])]
            (-> db
-               (assoc-in [:users notify :inboxes uid] {:uid           inbox-id
+               (assoc-in [:users notify :inboxes uid] {:id            inbox-id
                                                        :notifications (inc notifications-count)
                                                        :updated-at    (js/Date.now)})
-               (assoc-in [:users uid :inboxes notify] {:uid        inbox-id
+               (assoc-in [:users uid :inboxes notify] {:id         inbox-id
                                                        :updated-at (js/Date.now)})))))
 
 (reg-event-fx

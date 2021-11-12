@@ -3,6 +3,7 @@
             [re-frame.core :as rf]
             [clojure.string :as str]
             [app.components.page-nav :refer [page-nav]]
+            [app.inbox.views.message-card :refer [message-card]]
             ["@smooth-ui/core-sc" :refer [Row Col Box Button Input]]))
 
 (defn inbox-page
@@ -38,4 +39,4 @@
                                 :mt            10}
                         (for [message inbox-messages]
                              ^{:key (:created-at message)}
-                             [:div (:message message)])]]]]))))
+                             [message-card message])]]]]))))

@@ -1,6 +1,7 @@
 (ns app.inbox.views.inbox-page
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
+            [clojure.string :as str]
             [app.components.page-nav :refer [page-nav]]
             ["@smooth-ui/core-sc" :refer [Row Col Box Button Input]]))
 
@@ -8,8 +9,9 @@
       []
       (let [initial-values {:message ""}
             values (r/atom initial-values)
-            save (fn [message]
-                     (rf/dispatch [:insert-message message])
+            save (fn [event {:keys [message]}]
+                     (.preventDefault event)                ; It disables the form submission when hitting 'enter button'
+                     (rf/dispatch [:insert-message {:message (str/trim message)}])
                      (reset! values initial-values))]
            (fn []
                (let [inbox-messages @(rf/subscribe [:inbox-messages])
@@ -20,14 +22,16 @@
                      [:> Row {:justify-content "center"}
                       [:> Col {:xs 12 :md 6}
                        [:> Box {:display "flex"}
-                        [:> Input {:control   true
-                                   :value     (:message @values)
-                                   :on-change #(swap! values assoc :message (.. % -target -value))}]
+                        [:> Box {:width "100%"}
+                         [:form {:on-submit #(save % @values)}
+                          [:> Input {:control   true
+                                     :value     (:message @values)
+                                     :on-change #(swap! values assoc :message (.. % -target -value))}]]]
                         [:> Box
                          [:> Button {:size     "sm"
                                      :mt       "6px"
                                      :ml       -50
-                                     :on-click #(save @values)}
+                                     :on-click #(save % @values)}
                           "Send"]]]
                        [:> Box {:background    "white"
                                 :border-radius 10

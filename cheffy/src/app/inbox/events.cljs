@@ -25,7 +25,7 @@
       (let [uid (get-in db [:auth :uid])
             inbox-id (get-in db [:nav :active-inbox])
             participants (get-in db [:inboxes inbox-id :participants])
-            conversation-with (first (disj participants udi))]
+            conversation-with (first (disj participants uid))]
            {:db       (update-in db [:inboxes inbox-id :messages] conj {:message    message
                                                                         :author     uid
                                                                         :created-at (js/Date.now)})

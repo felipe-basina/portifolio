@@ -8,6 +8,7 @@
             [app.recipes.views.recipe-steps :refer [recipe-steps]]
             [app.recipes.views.recipe-editor :refer [recipe-editor]]
             [app.recipes.views.publish-recipe :refer [publish-recipe]]
+            [app.recipes.views.request-to-cook :refer [request-to-cook]]
             ["@smooth-ui/core-sc" :refer [Box Row Col Button]]))
 
 (defn recipe-page
@@ -36,7 +37,7 @@
                                                          :on-click #(rf/dispatch [:set-active-nav :become-a-chef])}
                                               "Become a Chef"]
                                  author? [publish-recipe]
-                                 (not author?) "request-to-cook")}]
+                                 (not author?) [request-to-cook])}]
             [:> Box
              [:> Row
               [:> Col {:xs 12 :sm 6}

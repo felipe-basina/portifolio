@@ -12,7 +12,7 @@
             [:> Box {:class "cards"}
              (for [[k {:keys [id notifications updated-at]} :as inbox] user-inboxes
                    :let [notifications? (> notifications 0)]]
-                  ^{:key id}
+                  ^{:key k}
                   [inbox-card {:uid-inbox      k
                                :inbox-id       id
                                :notifications? notifications?

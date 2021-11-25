@@ -31,3 +31,21 @@
                                                                         :created-at (js/Date.now)})
             :dispatch [:send-notification {:notify   conversation-with
                                            :inbox-id inbox-id}]})))
+
+(reg-event-fx
+  :request-message
+  (fn [{:keys [db]} [_ {:keys [message]}]]
+      (let [uid (get-in db [:auth :uid])
+            recipe-id (get-in db [:nav :active-recipe])
+            cook (get-in db [:recipes recipe-id :cook])
+            existing-inbox-id (get-in db [:users uid :inboxes cook :id])
+            new-inbox-id (keyword (str "inbox-" (random-uuid)))
+            message {:message    message
+                     :author     uid
+                     :created-at (js/Date.now)}]
+           {:db         (if existing-inbox-id
+                          (update-in db [:inboxes existing-inbox-id :messages] conj message)
+                          (assoc-in db [:inboxes new-inbox-id] {:messages     [message]
+                                                                :participants #{uid cook}}))
+            :dispatch-n [[:close-modal]
+                         [:send-notification {:notify cook :inbox-id (or existing-inbox-id new-inbox-id)}]]})))

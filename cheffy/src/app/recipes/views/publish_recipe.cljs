@@ -13,7 +13,8 @@
             open-modal (fn [{:keys [modal-name recipe]}]
                            (rf/dispatch [:open-modal modal-name])
                            (reset! values recipe))
-            publish (fn [{:keys [price]}]
+            publish (fn [event {:keys [price]}]
+                        (.preventDefault event)
                         (rf/dispatch [:publish-recipe {:price (js/parseInt price)}])
                         (reset! values initial-values))]
            (fn []
@@ -28,10 +29,11 @@
                                       "Publish"])
                      [modal {:modal-name :publish-recipe
                              :header     "Recipe"
-                             :body       [form-group {:id     :price
-                                                      :label  "Price (in cents)"
-                                                      :values values
-                                                      :type   "number"}]
+                             :body       [:form {:on-submit #(publish % @values)}
+                                          [form-group {:id     :price
+                                                       :label  "Price (in cents)"
+                                                       :values values
+                                                       :type   "number"}]]
                              :footer     [:<>
                                           (when public?
                                                 [:a {:href     "#"
@@ -39,5 +41,5 @@
                                                  "Unpublish"])
                                           [:> Button {:on-click #(rf/dispatch [:close-modal])}
                                            "Cancel"]
-                                          [:> Button {:on-click #(publish @values)}
+                                          [:> Button {:on-click #(publish % @values)}
                                            "Publish"]]}]]))))

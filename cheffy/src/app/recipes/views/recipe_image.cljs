@@ -14,7 +14,8 @@
             open-modal (fn [{:keys [modal-name recipe]}]
                            (rf/dispatch [:open-modal modal-name])
                            (reset! values recipe))
-            save (fn [img]                                  ;; This is need to allow the execution of two functions, one after another
+            save (fn [event img]                            ;; This is need to allow the execution of two functions, one after another
+                     (.preventDefault event)
                      (rf/dispatch [:upsert-image img])
                      (reset! values initial-values))]
            (fn []
@@ -31,13 +32,14 @@
                      (when author?
                            [modal {:modal-name :image-editor
                                    :header     "Image"
-                                   :body       [form-group {:id     :img
-                                                            :label  "URL"
-                                                            :type   "text"
-                                                            :values values}]
+                                   :body       [:form {:on-submit #(save % @values)}
+                                                [form-group {:id     :img
+                                                             :label  "URL"
+                                                             :type   "text"
+                                                             :values values}]]
                                    :footer     [:<>
                                                 [:> Button {:on-click #(rf/dispatch [:close-modal])
                                                             :variant  "light"}
                                                  "Cancel"]
-                                                [:> Button {:on-click #(save @values)}
+                                                [:> Button {:on-click #(save % @values)}
                                                  "Save"]]}])]))))

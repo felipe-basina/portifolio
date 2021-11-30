@@ -1,6 +1,7 @@
 (ns app.recipes.views.recipe-image
   (:require [re-frame.core :as rf]
             [reagent.core :as r]
+            [clojure.string :as str]
             [app.components.form-group :refer [form-group]]
             [app.components.modal :refer [modal]]
             ["@smooth-ui/core-sc" :refer [Box Button Typography
@@ -14,10 +15,11 @@
             open-modal (fn [{:keys [modal-name recipe]}]
                            (rf/dispatch [:open-modal modal-name])
                            (reset! values recipe))
-            save (fn [event img]                            ;; This is need to allow the execution of two functions, one after another
+            save (fn [event {:keys [img]}]                  ;; This is need to allow the execution of two functions, one after another
                      (.preventDefault event)
-                     (rf/dispatch [:upsert-image img])
-                     (reset! values initial-values))]
+                     (when (not (str/blank? img))
+                           (rf/dispatch [:upsert-image {:img img}])
+                           (reset! values initial-values)))]
            (fn []
                (let [{:keys [img cook name]} @(rf/subscribe [:recipe])]
                     [:<>                                    ;; Fragment

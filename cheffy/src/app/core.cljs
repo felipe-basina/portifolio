@@ -12,6 +12,9 @@
     ;; -- become-a-chef --
             [app.become-a-chef.views.become-a-chef :refer [become-a-chef]]
             [app.become-a-chef.events]
+    ;; -- errors --
+            [app.errors.events]
+            [app.errors.subs]
     ;; -- inboxes --
             [app.inbox.views.inboxes-page :refer [inboxes-page]]
             [app.inbox.views.inbox-page :refer [inbox-page]]

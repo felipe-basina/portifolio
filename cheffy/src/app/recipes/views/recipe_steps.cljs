@@ -15,9 +15,10 @@
                            (rf/dispatch [:open-modal modal-name])
                            (reset! values step))
             save (fn [{:keys [id desc]}]
-                     (rf/dispatch [:upsert-step {:id   (or id (keyword (str "step-" (random-uuid))))
-                                                 :desc (str/trim desc)}])
-                     (reset! values initial-values))]
+                     (when (not (str/blank? desc))
+                           (rf/dispatch [:upsert-step {:id   (or id (keyword (str "step-" (random-uuid))))
+                                                       :desc (str/trim desc)}])
+                           (reset! values initial-values)))]
            (fn []
                (let [steps @(rf/subscribe [:steps])
                      author? @(rf/subscribe [:author?])]

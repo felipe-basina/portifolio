@@ -12,8 +12,9 @@
             values (r/atom initial-values)
             save (fn [event {:keys [message]}]
                      (.preventDefault event)                ; It disables the form submission when hitting 'enter button'
-                     (rf/dispatch [:insert-message {:message (str/trim message)}])
-                     (reset! values initial-values))]
+                     (when (not (str/blank? message))
+                           (rf/dispatch [:insert-message {:message (str/trim message)}])
+                           (reset! values initial-values)))]
            (fn []
                (let [inbox-messages @(rf/subscribe [:inbox-messages])
                      conversation-with @(rf/subscribe [:conversation-with])]

@@ -2,16 +2,19 @@
   (:require [clojure.string :as str]
             [re-frame.core :refer [reg-event-db reg-event-fx]]
             [day8.re-frame.http-fx]
-            [ajax.core :as ajax]))
+            [ajax.core :as ajax]
+            [clojure.walk :as w]))
 
 (def recipes-endpoint "https://gist.githubusercontent.com/jacekschae/50ffe6e8851a5dfe35e932682ca32d85/raw/06e8041d0abf86e2c5d809a334cf8f18d3d6303b/recipes.json")
 
 (defn keywordize-id
       [coll]
-      (map (fn [v]
-               [(keyword (:id v))
-                (update v :id #(keyword (:id v)))])         ;; Updates the content from :id attribute to be a keyword
-           coll))
+      (->> coll
+           (w/keywordize-keys)
+           (map (fn [v]
+                    [(keyword (:id v))
+                     (update v :id #(keyword (:id v)))]))
+           (into {})))
 
 (reg-event-fx
   :get-recipes

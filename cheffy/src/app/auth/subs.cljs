@@ -2,29 +2,44 @@
   (:require [re-frame.core :refer [reg-sub]]))
 
 (reg-sub
-  :logged-in?
+  :uid
   (fn [db _]
-      (boolean (get-in db [:auth :uid]))))
+      (get-in db [:auth :uid])))
+
+(reg-sub
+  :users
+  (fn [db _]
+      (:users db)))
+
+(reg-sub
+  :logged-in?
+  :<- [:uid]
+  (fn [uid _]
+      (boolean uid)))
 
 (reg-sub
   :user-profile
-  (fn [db _]
-      (let [uid (get-in db [:auth :uid])]
-           (get-in db [:users uid :profile]))))
+  :<- [:uid]
+  :<- [:users]
+  (fn [[uid users] _]
+      (get-in users [uid :profile])))
 
 (reg-sub
   :user
-  (fn [db _]
-      (let [uid (get-in db [:auth :uid])]
-           (get-in db [:users uid]))))
+  :<- [:uid]
+  :<- [:users]
+  (fn [[uid users] _]
+      (get users uid)))
 
 (reg-sub
   :chef?
-  (fn [db _]
-      (let [uid (get-in db [:auth :uid])]
-           (= (get-in db [:users uid :role]) :chef))))
+  :<- [:uid]
+  :<- [:users]
+  (fn [[uid users] _]
+      (= (get-in users [uid :role]) :chef)))
 
 (reg-sub
   :user-image
-  (fn [db [_ uid]]
-      (get-in db [:users uid :profile :img])))
+  :<- [:users]
+  (fn [users [_ uid]]
+      (get-in users [uid :profile :img])))

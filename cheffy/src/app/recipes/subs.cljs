@@ -2,55 +2,60 @@
   (:require [re-frame.core :refer [reg-sub]]))
 
 (reg-sub
-  :drafts
+  :recipes
   (fn [db _]
-      (let [recipes (vals (get-in db [:recipes]))
-            uid (get-in db [:auth :uid])
-            filters [#(= (:public? %) false) #(= (:cook %) uid)]]
-           (filter (apply every-pred filters) recipes))))
+      (:recipes db)))
+
+(reg-sub
+  :drafts
+  :<- [:recipes]
+  :<- [:uid]
+  (fn [[recipes uid] _]
+      (let [filters [#(= (:public? %) false) #(= (:cook %) uid)]]
+           (filter (apply every-pred filters) (vals recipes)))))
 
 (reg-sub
   :public
-  (fn [db _]
-      (let [recipes (vals (get-in db [:recipes]))]
-           (filter #(= (:public? %) true) recipes))))
+  :<- [:recipes]
+  (fn [recipes _]
+      (filter #(= (:public? %) true) (vals recipes))))
 
 (reg-sub
   :recipe
-  (fn [db _]
-      (let [active-recipe (get-in db [:nav :active-recipe])]
-           (get-in db [:recipes active-recipe]))))
+  :<- [:recipes]
+  :<- [:active-recipe]
+  (fn [[recipes active-recipe] _]
+      (get recipes active-recipe)))
 
 (reg-sub
   :author?
-  (fn [db _]
-      (let [uid (get-in db [:auth :uid])
-            active-recipe (get-in db [:nav :active-recipe])
-            recipe (get-in db [:recipes active-recipe])]
-           (= uid (:cook recipe)))))
+  :<- [:recipe]
+  :<- [:uid]
+  (fn [[recipe uid] _]
+      (= uid (:cook recipe))))
 
 (reg-sub
   :ingredients
-  (fn [db _]
-      (let [active-recipe (get-in db [:nav :active-recipe])
-            ingredients (get-in db [:recipes active-recipe :ingredients])]
+  :<- [:recipe]
+  (fn [recipe _]
+      (let [ingredients (:ingredients recipe)]
            (->> ingredients
                 (vals)
                 (sort-by :order)))))
 
 (reg-sub
   :steps
-  (fn [db _]
-      (let [active-recipe (get-in db [:nav :active-recipe])
-            steps (get-in db [:recipes active-recipe :steps])]
+  :<- [:recipe]
+  (fn [recipe _]
+      (let [steps (:steps recipe)]
            (->> steps
                 (vals)
                 (sort-by :order)))))
 
 (reg-sub
   :saved
-  (fn [db _]
-      (let [uid (get-in db [:auth :uid])
-            saved (get-in db [:users uid :saved])
-            recipes (vals (get-in db [:recipes]))]
-           (filter #(contains? saved (:id %)) recipes))))
+  :<- [:recipes]
+  :<- [:user]
+  (fn [[recipes user] _]
+      (let [saved (:saved user)]
+           (filter #(contains? saved (:id %)) (vals recipes)))))

@@ -5,22 +5,29 @@
       (compare b a))
 
 (reg-sub
-  :user-inboxes
+  :inboxes
   (fn [db _]
-      (let [uid (get-in db [:auth :uid])]
-           (sort-by :update-profile reverse-comparison (get-in db [:users uid :inboxes])))))
+      (:inboxes db)))
+
+(reg-sub
+  :user-inboxes
+  :<- [:user]
+  (fn [user _]
+      (sort-by :update-profile reverse-comparison (:inboxes user))))
 
 (reg-sub
   :inbox-messages
-  (fn [db _]
-      (let [inbox-id (get-in db [:nav :active-inbox])
-            messages (get-in db [:inboxes inbox-id :messages])]
+  :<- [:inboxes]
+  :<- [:active-inbox]
+  (fn [[inboxes active-inbox] _]
+      (let [messages (get-in inboxes [active-inbox :messages])]
            (sort-by :created-at reverse-comparison messages))))
 
 (reg-sub
   :conversation-with
-  (fn [db _]
-      (let [uid (get-in db [:auth :uid])
-            inbox-id (get-in db [:nav :active-inbox])
-            participants (get-in db [:inboxes inbox-id :participants])]
+  :<- [:inboxes]
+  :<- [:active-inbox]
+  :<- [:uid]
+  (fn [[inboxes active-inbox uid] _]
+      (let [participants (get-in inboxes [active-inbox :participants])]
            (first (disj participants uid)))))

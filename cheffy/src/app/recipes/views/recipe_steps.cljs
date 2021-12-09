@@ -4,7 +4,7 @@
             [clojure.string :as str]
             [app.components.modal :refer [modal]]
             [app.components.form-group :refer [form-group]]
-            ["@smooth-ui/core-sc" :refer [Box Typography Row Col Button]]
+            ["@smooth-ui/core-sc" :refer [Box Typography Row Col Button Textarea]]
             ["styled-icons/fa-solid/Plus" :refer [Plus]]))
 
 (defn recipe-steps
@@ -54,10 +54,11 @@
                             [modal {:modal-name :step-editor
                                     :header     "Step"
                                     :body       [:<>
-                                                 [form-group {:id     :desc
-                                                              :label  "Name"
-                                                              :type   "text"
-                                                              :values values}]]
+                                                 [form-group {:id      :desc
+                                                              :label   "Description"
+                                                              :type    "text"
+                                                              :values  values
+                                                              :element Textarea}]]
                                     :footer     [:<>
                                                  (when-let [step-id (:id @values)]
                                                            [:a {:href     "#"

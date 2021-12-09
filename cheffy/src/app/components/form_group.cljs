@@ -44,7 +44,8 @@
                          :type        type
                          :value       (id @values)
                          :on-change   #(swap! values assoc id (.. % -target -value))
-                         :on-key-down on-key-down}]
+                         :on-key-down on-key-down
+                         :on-key-up   (when-not (str/blank? (id @values)) validate)}]
             (comment                                        ;; Before refactoring
               (if textarea
                 [:> TextArea {:control     true

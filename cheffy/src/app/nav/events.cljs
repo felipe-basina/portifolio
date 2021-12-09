@@ -1,6 +1,7 @@
 (ns app.nav.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx reg-fx path]]
             [app.router :as router]
+            [app.helpers :as h]
             [day8.re-frame.tracing :refer-macros [fn-traced]]))
 
 (def nav-interceptors [(path :nav)])                        ;; Specifies which node from the db should be returned
@@ -42,11 +43,17 @@
   (fn-traced [{:keys [path]}]
              (router/set-token! path)))
 
-(reg-event-db
+(comment
+  reg-event-db
   :close-modal
   nav-interceptors
   (fn-traced [nav _]
              (assoc nav :active-modal nil)))
+
+(reg-event-db
+  :close-modal
+  (fn-traced [db _]
+             (h/close-modal db)))
 
 (reg-event-db
   :open-modal

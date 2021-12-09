@@ -32,3 +32,7 @@
       [val]
       (and (not (js/isNaN (js/parseInt val)))
            (number? (js/parseInt val))))
+
+(defn close-modal
+      [db]
+      (assoc-in db [:nav :active-modal] nil))

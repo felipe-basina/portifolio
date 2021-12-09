@@ -39,7 +39,7 @@
                          :control     true
                          :valid       valid
                          :on-blur     validate
-                         :rows        6
+                         :rows        (when textarea 6)
                          :id          id
                          :type        type
                          :value       (id @values)
@@ -50,7 +50,7 @@
                 [:> TextArea {:control     true
                               :valid       valid
                               :on-blur     validate
-                              :rows        (when textarea 6)
+                              :rows        6
                               :id          id
                               :type        type
                               :value       (id @values)

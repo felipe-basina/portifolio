@@ -1,5 +1,7 @@
 (ns app.core
   (:require [reagent.core :as r]
+            [re-frame.core :as rf]
+            [app.db]
             [app.theme :refer [cheffy-theme]]
             ["@smooth-ui/core-sc" :refer [Normalize Button ThemeProvider]]))
 
@@ -8,11 +10,11 @@
       [:<>
        [:> Normalize]                                       ; Alternative to (r/adapt-react-class Normalize)
        [:> ThemeProvider {:theme cheffy-theme}
-        [:> Button {:variant "danger"} "Hello"]
-        [:div "Cheffy"]]])
+        [:> Button {:variant "danger"} "Hello"]]])
 
 (defn ^:dev/after-load start
       []
+      (rf/dispatch-sync [:initialize-db])                   ; (rf/dispatch) will load content in async style
       (r/render [app]
                 (.getElementById js/document "app")))
 

@@ -2,7 +2,9 @@
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
             [app.db]
+    ;; -- nav --
             [app.nav.views.nav :refer [nav]]
+            [app.nav.events]
             [app.theme :refer [cheffy-theme]]
             ["@smooth-ui/core-sc" :refer [Normalize Button ThemeProvider]]))
 

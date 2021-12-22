@@ -2,10 +2,11 @@
   (:require ["@smooth-ui/core-sc" :refer [Box]]))
 
 (defn nav-item
-      [{:keys [id name href]}]
-      [:> Box {:key  id
-               :as   "a"
-               :href href
-               :ml   2
-               :pb   10}
+      [{:keys [id name href dispatch]}]
+      [:> Box {:key      id
+               :as       "a"
+               :href     href
+               :on-click dispatch
+               :ml       2
+               :pb       10}
        name])

@@ -2,6 +2,7 @@
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
             [app.db]
+            [app.nav.views.nav :refer [nav]]
             [app.theme :refer [cheffy-theme]]
             ["@smooth-ui/core-sc" :refer [Normalize Button ThemeProvider]]))
 
@@ -10,7 +11,7 @@
       [:<>
        [:> Normalize]                                       ; Alternative to (r/adapt-react-class Normalize)
        [:> ThemeProvider {:theme cheffy-theme}
-        [:> Button {:variant "danger"} "Hello"]]])
+        [nav]]])
 
 (defn ^:dev/after-load start
       []

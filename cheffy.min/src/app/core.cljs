@@ -4,6 +4,8 @@
             [app.db]
     ;; -- auth --
             [app.auth.views.profile :refer [profile]]
+            [app.auth.views.sign-up :refer [sign-up]]
+            [app.auth.views.log-in :refer [log-in]]
     ;; -- become-a-chef --
             [app.become-a-chef.views.become-a-chef :refer [become-a-chef]]
     ;; -- inbox --
@@ -21,6 +23,8 @@
       [page-name]
       (case page-name
             :profile [profile]
+            :sign-up [sign-up]
+            :log-in [log-in]
             :become-a-chef [become-a-chef]
             :inboxes [inboxes]
             :recipes [recipes]

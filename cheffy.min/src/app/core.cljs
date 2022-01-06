@@ -7,6 +7,7 @@
             [app.auth.views.sign-up :refer [sign-up]]
             [app.auth.views.log-in :refer [log-in]]
             [app.auth.events]
+            [app.auth.subs]
     ;; -- become-a-chef --
             [app.become-a-chef.views.become-a-chef :refer [become-a-chef]]
     ;; -- inbox --

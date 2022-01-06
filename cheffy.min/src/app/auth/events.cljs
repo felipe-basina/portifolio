@@ -2,6 +2,21 @@
   (:require [re-frame.core :refer [reg-event-fx]]))
 
 (reg-event-fx                                               ;; cofx {:db db :dispatch [:set-active-nav :saved]}
+  :sign-up
+  (fn [{:keys [db]} [_ {:keys [first-name last-name email password]}]]
+      {:db       (-> db
+                     (assoc-in [:auth :uid] email)
+                     (assoc-in [:users email] {:id      email
+                                               :profile {:first-name first-name
+                                                         :last-name  last-name
+                                                         :email      email
+                                                         :password   password
+                                                         :img        "img/avatar.jpg"}
+                                               :saved   #{}
+                                               :inboxes {}}))
+       :dispatch [:set-active-nav :saved]}))
+
+(reg-event-fx                                               ;; cofx {:db db :dispatch [:set-active-nav :saved]}
   :log-in
   (fn [{:keys [db]} [_ {:keys [email password]}]]
       (let [user (get-in db [:users email])

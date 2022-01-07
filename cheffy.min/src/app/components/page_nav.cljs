@@ -20,6 +20,6 @@
                         :py          20
                         :font-weight 700}
          center]]
-       [:> Box right
+       [:> Box
         (when right
               right)]])

@@ -5,6 +5,7 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [ring "1.8.1"]
                  [integrant "0.8.0"]
+                 [integrant/repl "0.3.2"]
                  [environ "1.2.0"]
                  [metosin/reitit "0.5.5"]
                  [seancorfield/next.jdbc "1.1.582"]

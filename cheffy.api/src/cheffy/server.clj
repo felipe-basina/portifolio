@@ -4,7 +4,8 @@
             [integrant.core :as ig]
             [environ.core :refer [env]]))
 
-(def app
+(defn app
+  [env]
   (ring/ring-handler
     (ring/router
       [["/"
@@ -51,7 +52,6 @@
         ig/init)))
 
 (comment
-  (start)
   (app {:request-method :get
         :uri            "/"})
   (-main))

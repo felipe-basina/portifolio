@@ -19,7 +19,7 @@
 
 (comment
   (app {:request-method :get
-        :uri            "/v1"})
+        :uri            "/v1/recipes"})
   (go)
   (halt)
   (reset))

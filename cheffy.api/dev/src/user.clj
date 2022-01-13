@@ -14,10 +14,12 @@
 (def reset ig-repl/reset)                                   ; Reloads file changed
 (def reset-all ig-repl/reset-all)                           ; Reloads all files
 
-(defn app [] (-> state/system :cheffy/app))
-(defn db [] (-> state/system :db/postgres))
+(def app (-> state/system :cheffy/app))
+(def db (-> state/system :db/postgres))
 
 (comment
+  (app {:request-method :get
+        :uri            "/v1"})
   (go)
   (halt)
   (reset))

@@ -23,7 +23,11 @@
   (app {:request-method :get
         :uri            "/swagger.json"})
   (jdbc/execute! db ["SELECT * FROM recipe WHERE public = true"])
-  (sql/find-by-keys db :recipe {:public true})
+  (time (sql/find-by-keys db :recipe {:public false}))
+  (time
+    (with-open [conn (jdbc/get-connection db)]
+      {:public (sql/find-by-keys conn :recipe {:public false})
+       :drafts (sql/find-by-keys conn :recipe {:public false :uid "auth0|5ef440986e8fbb001355fd9c"})}))
   (go)
   (halt)
   (reset))

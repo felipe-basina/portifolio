@@ -28,6 +28,21 @@
     (with-open [conn (jdbc/get-connection db)]
       {:public (sql/find-by-keys conn :recipe {:public false})
        :drafts (sql/find-by-keys conn :recipe {:public false :uid "auth0|5ef440986e8fbb001355fd9c"})}))
+
+  (with-open [conn (jdbc/get-connection db)]
+    (let [recipe-id "a3dde84c-4a33-45aa-b0f3-4bf9ac997680"]
+      (sql/get-by-id conn :recipe recipe-id :recipe_id {})))
+
+  (with-open [conn (jdbc/get-connection db)]
+    (let [recipe-id "a3dde84c-4a33-45aa-b0f3-4bf9ac997680"
+          [recipe] (sql/find-by-keys conn :recipe {:recipe_id recipe-id})
+          steps (sql/find-by-keys conn :step {:recipe_id recipe-id})
+          ingredients (sql/find-by-keys conn :ingredient {:recipe_id recipe-id})]
+      (when (seq recipe)
+        (assoc recipe
+          :recipe/steps steps
+          :recipe/ingredients ingredients))))
+
   (go)
   (halt)
   (reset))

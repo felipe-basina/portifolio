@@ -12,7 +12,8 @@
 (defn retrieve-recipe
   [db]
   (fn [request]
-    (let [recipe-id "a3dde84c-4a33-45aa-b0f3-4bf9ac997680"
+    (clojure.pprint/pprint request)
+    #_(let [recipe-id "a3dde84c-4a33-45aa-b0f3-4bf9ac997680"
           recipe (recipe-db/find-recipe-by-id db recipe-id)]
       (if recipe
         (rr/response recipe)

@@ -4,7 +4,10 @@
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]
             [muuntaja.core :as m]
-            [reitit.ring.middleware.muuntaja :as muuntaja]))
+            [reitit.ring.middleware.muuntaja :as muuntaja]
+            [reitit.coercion.spec :as coercion-spec]
+            [reitit.ring.coercion :as coercion]
+            [reitit.ring.middleware.exception :as exception]))
 
 (def swagger-docs
   ["/swagger.json"
@@ -16,10 +19,17 @@
                           :version     "1.0.0"}}
      :handler (swagger/create-swagger-handler)}}])
 
+;;-----------------------------------------------
+;; All middleware defined below will be global
+;;-----------------------------------------------
 (def router-config
-  {:data {:muuntaja   m/instance                            ;; This with the middleware below will allow content negotiation (conversion): e.g. from bytearray to json
+  {:data {:coercion   coercion-spec/coercion
+          :muuntaja   m/instance                            ;; This with the middleware below will allow content negotiation (conversion): e.g. from bytearray to json
           :middleware [swagger/swagger-feature
-                       muuntaja/format-middleware]}})
+                       muuntaja/format-middleware
+                       exception/exception-middleware       ;; This will send http 400 when there is an issue with parameters
+                       coercion/coerce-request-middleware]}} ;; This will convert request parameters to the values defined in :parameters {:path {:recipe-id int?}} (recipe.routes)
+  )
 
 (defn routes
   [env]

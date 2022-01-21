@@ -20,8 +20,11 @@
 (def db (-> state/system :db/postgres))
 
 (comment
-  (app {:request-method :get
-        :uri            "/swagger.json"})
+  (-> (app {:request-method :get
+            :uri            "/v1/recipes/123-recipe"})
+      :body
+      (slurp))
+
   (jdbc/execute! db ["SELECT * FROM recipe WHERE public = true"])
   (time (sql/find-by-keys db :recipe {:public false}))
   (time

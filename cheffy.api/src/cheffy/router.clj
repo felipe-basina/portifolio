@@ -28,7 +28,8 @@
           :middleware [swagger/swagger-feature
                        muuntaja/format-middleware
                        exception/exception-middleware       ;; This will send http 400 when there is an issue with parameters
-                       coercion/coerce-request-middleware]}} ;; This will convert request parameters to the values defined in :parameters {:path {:recipe-id int?}} (recipe.routes)
+                       coercion/coerce-request-middleware   ;; This will convert request parameters to the values defined in :parameters {:path {:recipe-id int?}} (recipe.routes)
+                       coercion/coerce-response-middleware]}}
   )
 
 (defn routes

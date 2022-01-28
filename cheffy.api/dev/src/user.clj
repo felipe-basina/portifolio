@@ -34,6 +34,8 @@
       (slurp))
 
   (jdbc/execute! db ["SELECT * FROM recipe WHERE public = true"])
+  (jdbc/execute! db ["DELETE FROM recipe WHERE name = 'my recipe'"])
+  (jdbc/execute! db ["select count(*) FROM recipe WHERE name = 'my recipe'"])
   (time (sql/find-by-keys db :recipe {:public false}))
   (time
     (with-open [conn (jdbc/get-connection db)]

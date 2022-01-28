@@ -21,7 +21,7 @@
 
 (comment
   (-> (app {:request-method :get
-            :uri            "/v1/recipes"})
+            :uri            "/v1/recipes/93f36ba4-036c-4140-9928-421cb3c987a8"})
       :body
       (slurp))
 
@@ -33,8 +33,17 @@
       :body
       (slurp))
 
+  (-> (app {:request-method :put
+            :uri            "/v1/recipes/58d1c24f-d0c6-4ad5-a1ee-f92e714d2f6c"
+            :body-params    {:name      "my-recipe"
+                             :public    false
+                             :prep-time 50
+                             :img       "image-url/img"}})
+      :body
+      (slurp))
+
   (jdbc/execute! db ["SELECT * FROM recipe WHERE public = true"])
-  (jdbc/execute! db ["DELETE FROM recipe WHERE name = 'my recipe'"])
+  (jdbc/execute! db ["DELETE FROM recipe WHERE name like '%my%recipe%'"])
   (jdbc/execute! db ["select count(*) FROM recipe WHERE name = 'my recipe'"])
   (time (sql/find-by-keys db :recipe {:public false}))
   (time

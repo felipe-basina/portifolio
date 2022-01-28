@@ -30,3 +30,15 @@
         (rr/not-found {:type    "recipe-not-found"
                        :message "Recipe not found"
                        :data    (str "recipe-id " recipe-id)})))))
+
+(defn update-recipe
+  [db]
+  (fn [request]
+    (let [recipe-id "58d1c24f-d0c6-4ad5-a1ee-f92e714d2f6c"
+          recipe (-> request :parameters :body)
+          update-successful? (recipe-db/update-recipe! db (assoc recipe :recipe-id recipe-id))]
+      (if update-successful?
+        (rr/status 204)
+        (rr/not-found {:type    "recipe-not-found"
+                       :message "Recipe not found"
+                       :data    (str "recipe-id " recipe-id)})))))

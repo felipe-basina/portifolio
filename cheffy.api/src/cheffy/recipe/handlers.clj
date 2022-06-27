@@ -4,6 +4,10 @@
             [cheffy.responses :as responses])
   (:import (java.util UUID)))
 
+;---------------------------------------------------------------------------------;
+; All the functions above returns an anonymous function because they are used     ;
+; as handlers, so it needs to return a new function                               ;
+;---------------------------------------------------------------------------------;
 (defn list-all-recipes
   [db]
   (fn [request]
@@ -31,7 +35,7 @@
                        :message "Recipe not found"
                        :data    (str "recipe-id " recipe-id)})))))
 
-(defn update-recipe
+(defn update-recipe!
   [db]
   (fn [request]
     (let [recipe-id "58d1c24f-d0c6-4ad5-a1ee-f92e714d2f6c"

@@ -19,9 +19,9 @@
      ["/:recipe-id"
       {:get {:handler    (recipe/retrieve-recipe db)
              :parameters {:path {:recipe-id string?}}
-             :responses  {200 {:body responses/recipes}}
+             :responses  {200 {:body responses/recipe}}
              :summary    "Retrieve recipe"}
-       :put {:handler    (recipe/update-recipe db)
+       :put {:handler    (recipe/update-recipe! db)
              :parameters {:path {:recipe-id string?}
                           :body {:name      string?
                                  :prep-time int?

@@ -20,6 +20,9 @@
 (def db (-> state/system :db/postgres))
 
 (comment
+  ;; To show content on repl as clojure map (namespace keywords)
+  (set! *print-namespace-maps* false)
+
   (-> (app {:request-method :get
             :uri            "/v1/recipes/93f36ba4-036c-4140-9928-421cb3c987a8"})
       :body
@@ -33,8 +36,10 @@
       :body
       (slurp))
 
+  (sql/update! db :recipe {:name "MyRecipey"} {:recipe-id "69472ea0-b494-43f7-b4b6-544e2a4607f2"})
+
   (-> (app {:request-method :put
-            :uri            "/v1/recipes/58d1c24f-d0c6-4ad5-a1ee-f92e714d2f6c"
+            :uri            "/v1/recipes/69472ea0-b494-43f7-b4b6-544e2a4607f2"
             :body-params    {:name      "my-recipe"
                              :public    false
                              :prep-time 50
@@ -43,8 +48,12 @@
       (slurp))
 
   (jdbc/execute! db ["SELECT * FROM recipe WHERE public = true"])
+  (jdbc/execute! db ["SELECT * FROM recipe"])
+  (jdbc/execute! db ["SELECT * FROM recipe where recipe_id = '58d1c24f-d0c6-4ad5-a1ee-f92e714d2f6c'"])
   (jdbc/execute! db ["DELETE FROM recipe WHERE name like '%my%recipe%'"])
-  (jdbc/execute! db ["select count(*) FROM recipe WHERE name = 'my recipe'"])
+  (jdbc/execute! db ["select * FROM recipe WHERE name = 'my recipe'"])
+  (jdbc/execute! db ["select count(*) FROM recipe"])
+
   (time (sql/find-by-keys db :recipe {:public false}))
   (time
     (with-open [conn (jdbc/get-connection db)]

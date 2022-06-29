@@ -11,7 +11,7 @@
         (is (vector? (:public body)))
         (is (vector? (:drafts body)))))
 
-    (testing "without -- public"
+    (testing "without auth -- public"
       (let [{:keys [status body]} (ts/test-endpoint :get "/v1/recipes" {:auth false})]
         (is (= 200 status))
         (is (vector? (:public body)))

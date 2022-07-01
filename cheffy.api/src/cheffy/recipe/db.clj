@@ -31,11 +31,31 @@
 (defn update-recipe!
   [db recipe]
   (-> (sql/update! db :recipe recipe (select-keys recipe [:recipe-id]))
-      :jdbc/update-count
+      ::jdbc/update-count
       (pos?)))
 
 (defn delete-recipe!
   [db recipe]
   (-> (sql/delete! db :recipe recipe)
-      :jdbc/update-count
+      ::jdbc/update-count
+      (pos?)))
+
+(defn favorite-recipe!
+  [db {:keys [recipe-id] :as data}]
+  (-> (jdbc/with-transaction [tx db]                        ; Using transaction to guarantee all or nothing
+                             (sql/insert! tx :recipe-favorite data (:options db))
+                             (jdbc/execute-one! tx ["UPDATE recipe
+                                                     SET favorite_count = favorite_count + 1
+                                                     WHERE recipe_id = ?" recipe-id]))
+      ::jdbc/update-count
+      (pos?)))
+
+(defn unfavorite-recipe!
+  [db {:keys [recipe-id] :as data}]
+  (-> (jdbc/with-transaction [tx db]
+                             (sql/delete! tx :recipe-favorite data (:options db))
+                             (jdbc/execute-one! tx ["UPDATE recipe
+                                                     SET favorite_count = favorite_count - 1
+                                                     WHERE recipe_id = ?" recipe-id]))
+      ::jdbc/update-count
       (pos?)))

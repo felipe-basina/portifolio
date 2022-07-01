@@ -6,7 +6,7 @@
 (defn routes
   [env]                                                     ; jdbc-url
   (let [db (:jdbc-url env)]
-    ["/recipes" {:swagger {:tags ["recipes"]}
+    ["/recipes" {:swagger    {:tags ["recipes"]}
                  :middleware [[mw/wrap-auth0]]}
      [""
       {:get  {:handler   (recipe/list-all-recipes db)
@@ -24,6 +24,7 @@
                 :responses  {200 {:body responses/recipe}}
                 :summary    "Retrieve recipe"}
        :put    {:handler    (recipe/update-recipe! db)
+                :middleware [[mw/wrap-recipe-owner db]]
                 :parameters {:path {:recipe-id string?}
                              :body {:name      string?
                                     :prep-time int?
@@ -32,6 +33,7 @@
                 :responses  {204 {:body nil?}}
                 :summary    "Update recipe"}
        :delete {:handler    (recipe/delete-recipe! db)
+                :middleware [[mw/wrap-recipe-owner db]]
                 :parameters {:path {:recipe-id string?}}
                 :responses  {204 {:body nil?}}
                 :summary    "Delete recipe"}}]]))

@@ -58,6 +58,36 @@
                        :message "Recipe not found"
                        :data    (str "recipe-id " recipe-id)})))))
 
+(defn create-step!
+  [db]
+  (fn [request]
+    (let [recipe-id (-> request :parameters :path :recipe-id)
+          step (-> request :parameters :body)
+          step-id (str (UUID/randomUUID))]
+      (recipe-db/insert-step! db (assoc step :recipe-id recipe-id
+                                             :step-id step-id))
+      (rr/created
+        (str responses/base-url "/recipes/" recipe-id)
+        {:step-id step-id}))))
+
+(defn update-step!
+  [db]
+  (fn [request]
+    (let [step (-> request :parameters :body)
+          update-successful? (recipe-db/update-step! db step)]
+      (if update-successful?
+        (rr/status 204)
+        (rr/bad-request (select-keys step [:step-id]))))))
+
+(defn delete-step!
+  [db]
+  (fn [request]
+    (let [step (-> request :parameters :body)
+          deleted? (recipe-db/delete-step! db step)]
+      (if deleted?
+        (rr/status 204)
+        (rr/bad-request (select-keys step [:step-id]))))))
+
 (defn favorite-recipe!
   [db]
   (fn [request]

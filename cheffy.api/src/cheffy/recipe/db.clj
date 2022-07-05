@@ -40,6 +40,22 @@
       ::jdbc/update-count
       (pos?)))
 
+(defn insert-step!
+  [db step]
+  (sql/insert! db :step step))
+
+(defn update-step!
+  [db step]
+  (-> (sql/update! db :step step (select-keys step [:step-id]))
+      ::jdbc/update-count
+      (pos?)))
+
+(defn delete-step!
+  [db step]
+  (-> (sql/delete! db :step step)
+      ::jdbc/update-count
+      (pos?)))
+
 (defn favorite-recipe!
   [db {:keys [recipe-id] :as data}]
   (-> (jdbc/with-transaction [tx db]                        ; Using transaction to guarantee all or nothing

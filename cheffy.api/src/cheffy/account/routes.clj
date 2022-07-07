@@ -11,6 +11,9 @@
       {:post   {:handler   (account/create-account! db)
                 :responses {204 {:body nil?}}
                 :summary   "Create account"}
+       :put    {:handler   (account/update-role-to-cook!)
+                :responses {204 {:body nil?}}
+                :summary   "Update user role to cook"}
        :delete {:handler   (account/delete-account! db)
                 :responses {204 {:body nil?}}
                 :summary   "Delete account"}}]]))

@@ -12,7 +12,7 @@
       (account-db/create-account! db {:uid     sub
                                       :name    name
                                       :picture picture})
-      (rr/status 204))))
+      (rr/status 201))))
 
 (defn update-role-to-cook!
   []

@@ -1,10 +1,25 @@
 (ns cheffy.recipes-test
   (:require [clojure.test :refer :all]
             [cheffy.server :refer :all]
-            [cheffy.test-system :as ts]
-            [muuntaja.core :as m]))
+            [cheffy.test-system :as ts]))
 
-(use-fixtures :once ts/token-fixture)
+(defn recipe-fixture
+  [f]
+  (let [email "account-tests@cheffy.app"
+        password "Testing#00"]
+    (ts/create-auth0-user
+      {:connection "Username-Password-Authentication"
+       :email      email
+       :password   password})
+    (reset! ts/token (ts/get-test-token email))
+    (ts/test-endpoint :post "/v1/accounts" {:auth true})
+    (ts/test-endpoint :put "/v1/accounts" {:auth true})
+    (reset! ts/token (ts/get-test-token email))
+    (f)
+    (ts/test-endpoint :delete "/v1/accounts" {:auth true})
+    (reset! ts/token nil)))
+
+(use-fixtures :once recipe-fixture)
 
 (def recipe-id (atom nil))
 
@@ -113,7 +128,8 @@
       (is (nil? body)))))
 
 (comment
-  (ts/test-endpoint :get "/v1/recipes" {:auth false})
+  (ts/test-endpoint :get "/v1/recipes" {:auth true})
+  (ts/test-endpoint :get "/v1/recipes/e8fc982e-c0f2-4359-899d-902af3b3ee49" {:auth true})
 
   (ts/test-endpoint :post "/v1/recipes" {:auth true :body recipe})
   (let [{:keys [body]} (ts/test-endpoint :get "/v1/recipes/7ad6ae9d-e6b6-4142-8924-c98da78032ab" {:auth false})]

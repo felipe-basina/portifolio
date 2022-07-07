@@ -1,5 +1,6 @@
 (ns cheffy.account.db
-  (:require [next.jdbc.sql :as sql]))
+  (:require [next.jdbc.sql :as sql]
+            [next.jdbc :as jdbc]))
 
 (defn create-account!
   [db account]

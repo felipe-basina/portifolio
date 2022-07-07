@@ -10,7 +10,8 @@
             [reitit.ring.coercion :as coercion]
             [reitit.ring.middleware.exception :as exception]
             [reitit.dev.pretty :as pretty]
-            [reitit.ring.spec :as rs]))
+            [reitit.ring.spec :as rs]
+            [reitit.ring.middleware.dev :as dev]))
 
 (def swagger-docs
   ["/swagger.json"
@@ -27,12 +28,13 @@
 ;;-----------------------------------------------
 (def router-config
   {:validate  rs/validate                                   ; Checks if handlers in routes are valid functions and not strings
+   :reitit.middleware/transform dev/print-request-diffs    ; Show all the requests related to an operation
    :exception pretty/exception
    :data      {:coercion   coercion-spec/coercion
                :muuntaja   m/instance                       ;; This with the middleware below will allow content negotiation (conversion): e.g. from bytearray to json
                :middleware [swagger/swagger-feature
                             muuntaja/format-middleware
-                            exception/exception-middleware  ;; This will send http 400 when there is an issue with parameters
+                            ;exception/exception-middleware  ;; This will send http 400 when there is an issue with parameters
                             coercion/coerce-request-middleware ;; This will convert request parameters to the values defined in :parameters {:path {:recipe-id int?}} (recipe.routes)
                             coercion/coerce-response-middleware]}}
   )

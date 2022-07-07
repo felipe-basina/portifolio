@@ -56,6 +56,22 @@
       ::jdbc/update-count
       (pos?)))
 
+(defn insert-ingredient!
+  [db ingredient]
+  (sql/insert! db :ingredient ingredient))
+
+(defn update-ingredient!
+  [db ingredient]
+  (-> (sql/update! db :ingredient ingredient (select-keys ingredient [:ingredient-id]))
+      ::jdbc/update-count
+      (pos?)))
+
+(defn delete-ingredient!
+  [db ingredient]
+  (-> (sql/delete! db :ingredient ingredient)
+      ::jdbc/update-count
+      (pos?)))
+
 (defn favorite-recipe!
   [db {:keys [recipe-id] :as data}]
   (-> (jdbc/with-transaction [tx db]                        ; Using transaction to guarantee all or nothing

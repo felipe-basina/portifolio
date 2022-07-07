@@ -9,7 +9,7 @@
                   :middleware [[mw/wrap-auth0]]}
      [""
       {:post   {:handler   (account/create-account! db)
-                :responses {204 {:body nil?}}
+                :responses {201 {:body nil?}}
                 :summary   "Create account"}
        :put    {:handler   (account/update-role-to-cook!)
                 :responses {204 {:body nil?}}

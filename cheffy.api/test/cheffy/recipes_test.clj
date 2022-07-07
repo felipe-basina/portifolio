@@ -10,12 +10,19 @@
 
 (def step-id (atom nil))
 
+(def ingredient-id (atom nil))
+
 (def recipe {:img       ""
              :prep-time 30
              :name      "My Test Recipe"})
 
 (def step {:description "My Test Step"
            :sort        1})
+
+(def ingredient {:name    "New Ingredient"
+                 :amount  5
+                 :measure "unit"
+                 :sort    1})
 
 (def update-recipe (assoc recipe :public true))
 
@@ -73,6 +80,29 @@
     (let [{:keys [status body]} (ts/test-endpoint :delete (str "/v1/recipes/" @recipe-id "/steps")
                                                   {:auth true :body {:step-id @step-id}})]
       (reset! step-id (:step-id body))
+      (is (= status 204))
+      (is (nil? body))))
+
+  (testing "Create ingredient"
+    (let [{:keys [status body]} (ts/test-endpoint :post (str "/v1/recipes/" @recipe-id "/ingredients")
+                                                  {:auth true :body ingredient})]
+      (reset! ingredient-id (:ingredient-id body))
+      (is (= status 201))))
+
+  (testing "Update ingredient"
+    (let [{:keys [status body]} (ts/test-endpoint :put (str "/v1/recipes/" @recipe-id "/ingredients")
+                                                  {:auth true :body {:ingredient-id @ingredient-id
+                                                                     :sort          2
+                                                                     :amount        6
+                                                                     :measure       "unit"
+                                                                     :name          "Updated Ingredient"}})]
+      (is (= status 204))
+      (is (nil? body))))
+
+  (testing "Delete ingredient"
+    (let [{:keys [status body]} (ts/test-endpoint :delete (str "/v1/recipes/" @recipe-id "/ingredients")
+                                                  {:auth true :body {:ingredient-id @ingredient-id}})]
+      (reset! ingredient-id (:ingredient-id body))
       (is (= status 204))
       (is (nil? body))))
 

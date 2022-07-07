@@ -1,7 +1,8 @@
 (ns cheffy.account.handlers
   (:require [ring.util.response :as rr]
             [clj-http.client :as http]
-            [cheffy.account.db :as account-db]))
+            [cheffy.account.db :as account-db]
+            [cheffy.auth0 :as auth0]))
 
 (defn create-account!
   [db]

@@ -53,6 +53,7 @@
   (jdbc/execute! db ["DELETE FROM recipe WHERE name like '%my%recipe%'"])
   (jdbc/execute! db ["select * FROM recipe WHERE name = 'my recipe'"])
   (jdbc/execute! db ["select count(*) FROM recipe"])
+  (jdbc/execute! db ["select * FROM account"])
 
   (time (sql/find-by-keys db :recipe {:public false}))
   (time
@@ -73,6 +74,50 @@
         (assoc recipe
           :recipe/steps steps
           :recipe/ingredients ingredients))))
+
+  (with-open [conn (jdbc/get-connection db)]
+    (let [conn-opts (jdbc/with-options conn (:options db))
+          conversations (sql/find-by-keys conn-opts :conversation {:uid "auth0|62bcacf353cb0e073428f840"})]
+      (doall
+        ; The for function is lazy so to execute the queries we need to wrap it with doall function
+        (for [{:conversation/keys [conversation-id] :as conversation} conversations
+              :let [{:message/keys [created-at]} (jdbc/execute-one! conn-opts ["SELECT created_at FROM message
+                                                                           WHERE conversation_id = ?
+                                                                           ORDER BY created_at DESC
+                                                                           LIMIT 1" "8d4ab926-d5cc-483d-9af0-19627ed468eb"])
+                    with (jdbc/execute-one! conn-opts ["SELECT uid FROM conversation
+                                                   WHERE uid != ? AND conversation_id = ?" "auth0|62bcacf353cb0e073428f840" "8d4ab926-d5cc-483d-9af0-19627ed468eb"])
+                    [{:account/keys [name picture]}] (sql/find-by-keys conn-opts :account with)]]
+          (assoc conversation
+            :conversation/updated-at created-at
+            :conversation/with-name name
+            :conversation/with-picture picture)))))
+
+  (with-open [conn (jdbc/get-connection db)]
+    (let [conn-opts (jdbc/with-options conn (:options db))
+          conversations (sql/find-by-keys conn-opts :conversation {:uid "auth0|62bcacf353cb0e073428f840"})]
+      (mapv #(assoc % :conversation/update-at (:message/created_at
+                                                (jdbc/execute-one!
+                                                  conn-opts
+                                                  [(str "SELECT created_at"
+                                                        " FROM message"
+                                                        " WHERE conversation_id = ?"
+                                                        " ORDER BY created_at DESC"
+                                                        " LIMIT 1")
+                                                   (:conversation/conversation_id %)])))
+            (jdbc/execute! conn-opts
+                           [(str "SELECT c.*"
+                                 " , a.name AS with_name"
+                                 " , a.picture AS with_picture"
+                                 " FROM conversation c"
+                                 " JOIN conversation other"
+                                 " ON other.conversation_id = c.conversation_id"
+                                 " AND other.uid <> c.uid"
+                                 " JOIN account a"
+                                 " ON a.uid = other.uid"
+                                 " WHERE c.uid = ?")
+                            uid]))))
+
 
   (go)
   (halt)

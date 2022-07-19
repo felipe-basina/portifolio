@@ -1,6 +1,7 @@
 (ns cheffy.router
   (:require [reitit.ring :as ring]
             [cheffy.account.routes :as account]
+            [cheffy.conversation.routes :as conversation]
             [cheffy.recipe.routes :as recipe]
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]
@@ -28,13 +29,13 @@
 ;;-----------------------------------------------
 (def router-config
   {:validate  rs/validate                                   ; Checks if handlers in routes are valid functions and not strings
-   :reitit.middleware/transform dev/print-request-diffs    ; Show all the requests related to an operation
+   ;:reitit.middleware/transform dev/print-request-diffs     ; Show all the requests related to an operation
    :exception pretty/exception
    :data      {:coercion   coercion-spec/coercion
                :muuntaja   m/instance                       ;; This with the middleware below will allow content negotiation (conversion): e.g. from bytearray to json
                :middleware [swagger/swagger-feature
                             muuntaja/format-middleware
-                            ;exception/exception-middleware  ;; This will send http 400 when there is an issue with parameters
+                            exception/exception-middleware  ;; This will send http 400 when there is an issue with parameters
                             coercion/coerce-request-middleware ;; This will convert request parameters to the values defined in :parameters {:path {:recipe-id int?}} (recipe.routes)
                             coercion/coerce-response-middleware]}}
   )
@@ -46,7 +47,8 @@
       [swagger-docs
        ["/v1"
         (recipe/routes env)
-        (account/routes env)]]
+        (account/routes env)
+        (conversation/routes env)]]
       router-config)
     (ring/routes
       (swagger-ui/create-swagger-ui-handler {:path "/"}))))

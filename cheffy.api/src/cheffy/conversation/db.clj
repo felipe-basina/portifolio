@@ -28,5 +28,18 @@
   [[_ db conversation]]
   (sql/find-by-keys db :message conversation))
 
+(defmethod dispatch :insert-message
+  [[_ db {:keys [conversation-id to from] :as message}]]
+  (jdbc/with-transaction [tx db]
+                         (sql/insert! tx :message
+                                      (-> message
+                                          (assoc :uid from)
+                                          (dissoc :to :from))
+                                      (:options db))
+                         (jdbc/execute-one! tx ["UPDATE conversation
+                                                 SET notifications = notifications + 1
+                                                 WHERE conversation_id = ?
+                                                 AND uid = ?" conversation-id to])))
+
 (comment
   (dispatch [:find-conversation-by-uid {} {}]))

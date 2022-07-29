@@ -1,7 +1,9 @@
 (ns cheffy.conversation.routes
   (:require [cheffy.middleware :as mw]
             [ring.util.response :as rr]
-            [cheffy.conversation.db :as conversation-db]))
+            [cheffy.conversation.db :as conversation-db]
+            [cheffy.responses :as responses])
+  (:import (java.util UUID)))
 
 (defn routes
   [env]
@@ -27,7 +29,19 @@
               :parameters {:path {:conversation-id string?}}
               :responses  {200 {:body vector?}}
               :summary    "List conversation messages"}
-       :post {:handler    (fn [request] request)
+       :post {:handler    (fn [request]
+                            (let [conversation-id (-> request :parameters :path :conversation-id)
+                                  message (-> request :parameters :body)
+                                  message-id (str (UUID/randomUUID))
+                                  from (-> request :claims :sub)]
+                              (conversation-db/dispatch
+                                [:insert-message db (assoc message
+                                                      :message-id message-id
+                                                      :conversation-id conversation-id
+                                                      :from from)]
+                                (rr/created
+                                  (str responses/base-url "/v1/conversation" conversation-id)
+                                  {:conversation-id conversation-id}))))
               :parameters {:path {:conversation-id string?}
                            :body {:message-body string? :to string?}}
               :responses  {201 {:body {:conversation-id string?}}}

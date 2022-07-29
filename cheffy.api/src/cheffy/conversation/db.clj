@@ -24,5 +24,9 @@
             :conversation/with-name name
             :conversation/with-picture picture))))))
 
+(defmethod dispatch :find-messages-by-conversation
+  [[_ db conversation]]
+  (sql/find-by-keys db :message conversation))
+
 (comment
   (dispatch [:find-conversation-by-uid {} {}]))
